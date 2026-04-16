@@ -1,10 +1,12 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/json/JSONModel",
+    "sap/ui/layout/SplitterLayoutData",
+    "sap/ui/core/Item",
     "com/reflect/app/model/api",
     "com/reflect/app/model/prompts",
     "com/reflect/app/model/formatter"
-], function (Controller, JSONModel, Api, Prompts, formatter) {
+], function (Controller, JSONModel, SplitterLayoutData, Item, Api, Prompts, formatter) {
     "use strict";
 
     var EMAIL_MODE_ID = "email-drafting";
@@ -75,11 +77,11 @@ sap.ui.define([
                     if (oSplitter) {
                         var aAreas = oSplitter.getContentAreas();
                         if (aAreas.length >= 2) {
-                            aAreas[0].setLayoutData(new sap.ui.layout.SplitterLayoutData({
+                            aAreas[0].setLayoutData(new SplitterLayoutData({
                                 size: "280px",
                                 minSize: 200
                             }));
-                            aAreas[1].setLayoutData(new sap.ui.layout.SplitterLayoutData({
+                            aAreas[1].setLayoutData(new SplitterLayoutData({
                                 size: "auto",
                                 minSize: 400
                             }));
@@ -95,7 +97,7 @@ sap.ui.define([
 
             oSelect.destroyItems();
             for (var i = 0; i < aModels.length; i++) {
-                oSelect.addItem(new sap.ui.core.Item({
+                oSelect.addItem(new Item({
                     key: aModels[i],
                     text: formatter.modelDisplayName(aModels[i])
                 }));
@@ -226,6 +228,14 @@ sap.ui.define([
             return "Type your message...";
         },
 
+        formatEmptyTitle: function (sModeTitle) {
+            return sModeTitle || "Reflect \u2014 Communication Workspace";
+        },
+
+        formatEmptyDesc: function (sDesc) {
+            return sDesc || "Select a module from the sidebar to begin a structured self-reflection session.";
+        },
+
         formatEmptyStateMeta: function (sModel) {
             var sDisplay = formatter.modelDisplayName(sModel);
             var sTime = formatter.formatTimestamp(new Date().toISOString());
@@ -310,6 +320,7 @@ sap.ui.define([
             // Update the display
             var aNewMessages = aMessages.concat([oUserMsg, oAssistantMsg]);
             oChatModel.setProperty("/messages", aNewMessages);
+            oChatModel.setProperty("/hasMessages", true);
             oChatModel.setProperty("/isLoading", true);
             oChatModel.setProperty("/input", "");
 
@@ -369,6 +380,7 @@ sap.ui.define([
             this.onStopStreaming();
             var oChatModel = this.getView().getModel("chat");
             oChatModel.setProperty("/messages", []);
+            oChatModel.setProperty("/hasMessages", false);
             oChatModel.setProperty("/isLoading", false);
             oChatModel.setProperty("/input", "");
         },

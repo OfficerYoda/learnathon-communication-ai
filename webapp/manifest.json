@@ -59,7 +59,8 @@
             "messages": [],
             "isLoading": false,
             "input": "",
-            "charCount": 0
+            "charCount": 0,
+            "hasMessages": false
           }
         }
       },
@@ -87,30 +88,6 @@
       "type": "XML",
       "id": "mainView",
       "async": true
-    },
-    "routing": {
-      "config": {
-        "routerClass": "sap.m.routing.Router",
-        "type": "View",
-        "viewType": "XML",
-        "viewPath": "com.reflect.app.view",
-        "controlId": "mainApp",
-        "controlAggregation": "pages",
-        "async": true
-      },
-      "routes": [
-        {
-          "name": "main",
-          "pattern": "",
-          "target": "main"
-        }
-      ],
-      "targets": {
-        "main": {
-          "id": "mainView",
-          "name": "Main"
-        }
-      }
     }
   }
 }

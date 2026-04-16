@@ -5,15 +5,13 @@
     xmlns:core="sap.ui.core"
     xmlns:layout="sap.ui.layout"
     xmlns:tnt="sap.tnt"
-    xmlns:f="sap.f"
-    xmlns:unified="sap.ui.unified"
     height="100%">
 
     <tnt:ToolPage id="mainToolPage" sideExpanded="{config>/sidebarExpanded}">
 
-        <!-- ═══ Side Navigation ═══ -->
+        <!-- Side Navigation (decorative header only) -->
         <tnt:sideContent>
-            <tnt:SideNavigation id="sideNav" selectedKey="{config>/activeModeId}">
+            <tnt:SideNavigation id="sideNav">
                 <tnt:NavigationList>
                     <tnt:NavigationListItem
                         text="{i18n>sidebarLogo}"
@@ -23,14 +21,14 @@
             </tnt:SideNavigation>
         </tnt:sideContent>
 
-        <!-- ═══ Main Content ═══ -->
+        <!-- Main Content -->
         <tnt:mainContents>
             <Page id="mainPage" showHeader="false" enableScrolling="false">
                 <content>
                     <layout:Splitter id="mainSplitter" height="100%">
                         <layout:contentAreas>
 
-                            <!-- ═══ Left Panel: Configuration Sidebar ═══ -->
+                            <!-- Left Panel: Configuration Sidebar -->
                             <ScrollContainer
                                 id="configPanel"
                                 height="100%"
@@ -39,7 +37,6 @@
 
                                 <layout:VerticalLayout class="sapUiSmallMargin" width="100%">
 
-                                    <!-- App Title -->
                                     <Title text="{i18n>sidebarLogo}" level="H3" class="sapUiSmallMarginBottom"/>
 
                                     <!-- Modules Section -->
@@ -53,9 +50,8 @@
                                             <StandardListItem
                                                 title="{config>title}"
                                                 description="{config>description}"
-                                                icon="{= ${config>icon} === '\u2709\uFE0F' ? 'sap-icon://email' : 'sap-icon://discussion'}"
-                                                type="Active"
-                                                selected="{= ${config>id} === ${config>/activeModeId}}">
+                                                icon="sap-icon://discussion"
+                                                type="Active">
                                                 <customData>
                                                     <core:CustomData key="modeId" value="{config>id}"/>
                                                 </customData>
@@ -67,7 +63,6 @@
                                     <Panel headerText="{i18n>sidebarConfigLabel}" expandable="false">
                                         <layout:VerticalLayout width="100%" class="sapUiSmallMargin">
 
-                                            <!-- Relationship -->
                                             <Label text="{i18n>sidebarRelationshipLabel}" labelFor="relationshipInput"/>
                                             <Input
                                                 id="relationshipInput"
@@ -76,7 +71,6 @@
                                                 width="100%"
                                                 class="sapUiTinyMarginBottom"/>
 
-                                            <!-- Situation -->
                                             <Label text="{i18n>sidebarSituationLabel}" labelFor="situationInput"/>
                                             <TextArea
                                                 id="situationInput"
@@ -87,7 +81,6 @@
                                                 growing="true"
                                                 class="sapUiTinyMarginBottom"/>
 
-                                            <!-- Tone Multi-select -->
                                             <Label text="{i18n>sidebarToneLabel}" labelFor="toneSelect"/>
                                             <MultiComboBox
                                                 id="toneSelect"
@@ -96,30 +89,22 @@
                                                 width="100%"
                                                 selectionChange="onToneSelectionChange"
                                                 class="sapUiTinyMarginBottom">
-                                                <core:Item key="Assertive" text="{i18n>toneAssertive}"/>
-                                                <core:Item key="Calm" text="{i18n>toneCalm}"/>
-                                                <core:Item key="Compassionate" text="{i18n>toneCompassionate}"/>
-                                                <core:Item key="Direct" text="{i18n>toneDirect}"/>
-                                                <core:Item key="Objective" text="{i18n>toneObjective}"/>
-                                                <core:Item key="Pragmatic" text="{i18n>tonePragmatic}"/>
-                                                <core:Item key="Reassuring" text="{i18n>toneReassuring}"/>
-                                                <core:Item key="Respectful" text="{i18n>toneRespectful}"/>
-                                                <core:Item key="Sincere" text="{i18n>toneSincere}"/>
-                                                <core:Item key="Thoughtful" text="{i18n>toneThoughtful}"/>
+                                                <core:Item key="Assertive" text="Assertive"/>
+                                                <core:Item key="Calm" text="Calm"/>
+                                                <core:Item key="Compassionate" text="Compassionate"/>
+                                                <core:Item key="Direct" text="Direct"/>
+                                                <core:Item key="Objective" text="Objective"/>
+                                                <core:Item key="Pragmatic" text="Pragmatic"/>
+                                                <core:Item key="Reassuring" text="Reassuring"/>
+                                                <core:Item key="Respectful" text="Respectful"/>
+                                                <core:Item key="Sincere" text="Sincere"/>
+                                                <core:Item key="Thoughtful" text="Thoughtful"/>
                                             </MultiComboBox>
 
-                                            <!-- Tone Hint (shown when not in email mode) -->
-                                            <Text
-                                                text="{i18n>sidebarToneHint}"
-                                                visible="{= !${config>/isEmailMode}}"
-                                                class="sapUiTinyMarginBottom reflect-hint-text"/>
-
-                                            <!-- Model Selection -->
                                             <Label text="{i18n>sidebarModelLabel}" labelFor="modelSelect"/>
                                             <Select
                                                 id="modelSelect"
                                                 selectedKey="{config>/selectedModel}"
-                                                enabled="{= !${config>/modelsLoading}}"
                                                 change="onModelChange"
                                                 width="100%">
                                             </Select>
@@ -129,7 +114,7 @@
                                 </layout:VerticalLayout>
                             </ScrollContainer>
 
-                            <!-- ═══ Right Panel: Chat Area ═══ -->
+                            <!-- Right Panel: Chat Area -->
                             <Page
                                 id="chatPage"
                                 showNavButton="false"
@@ -144,10 +129,7 @@
                                                 type="Transparent"
                                                 press="onToggleSidebar"
                                                 tooltip="{i18n>headerToggleSidebar}"/>
-                                            <Breadcrumbs>
-                                                <Link text="{i18n>sidebarLogo}" enabled="false"/>
-                                                <Link text="{config>/activeMode/title}" enabled="false"/>
-                                            </Breadcrumbs>
+                                            <Title text="{config>/activeMode/title}" level="H5"/>
                                         </contentLeft>
                                         <contentRight>
                                             <Text
@@ -161,100 +143,103 @@
                                                 icon="sap-icon://decline"
                                                 type="Reject"
                                                 press="onClearChat"
-                                                visible="{= ${chat>/messages}.length > 0}"/>
+                                                visible="{chat>/hasMessages}"/>
                                         </contentRight>
                                     </Bar>
                                 </customHeader>
 
                                 <content>
-                                    <layout:VerticalLayout width="100%" height="100%" class="reflect-chat-layout">
+                                    <!-- Empty State -->
+                                    <VBox
+                                        id="emptyState"
+                                        visible="{= !${chat>/hasMessages}}"
+                                        alignItems="Center"
+                                        justifyContent="Center"
+                                        height="100%"
+                                        class="reflect-empty-state">
+                                        <core:Icon src="sap-icon://discussion" size="3rem" color="#bbb" class="sapUiMediumMarginBottom"/>
+                                        <Title text="{
+                                            path: 'config>/activeMode/title',
+                                            formatter: '.formatEmptyTitle'
+                                        }" level="H3"/>
+                                        <Text text="{
+                                            path: 'config>/activeMode/description',
+                                            formatter: '.formatEmptyDesc'
+                                        }" class="sapUiSmallMarginBottom"/>
+                                        <Text text="{
+                                            path: 'config>/selectedModel',
+                                            formatter: '.formatEmptyStateMeta'
+                                        }" class="reflect-meta-text"/>
+                                    </VBox>
 
-                                        <!-- Empty State -->
-                                        <IllustratedMessage
-                                            id="emptyState"
-                                            visible="{= ${chat>/messages}.length === 0}"
-                                            illustrationType="sapIllus-SimpleBalloon"
-                                            title="{= ${config>/activeMode/title} || ${i18n>emptyStateTitle}}"
-                                            description="{= ${config>/activeMode/description} || ${i18n>emptyStateDesc}}"
-                                            class="reflect-empty-state">
-                                            <additionalContent>
-                                                <Text text="{
-                                                    path: 'config>/selectedModel',
-                                                    formatter: '.formatEmptyStateMeta'
-                                                }" class="reflect-meta-text"/>
-                                            </additionalContent>
-                                        </IllustratedMessage>
-
-                                        <!-- Messages List -->
-                                        <ScrollContainer
-                                            id="messagesScroll"
-                                            height="100%"
-                                            vertical="true"
-                                            horizontal="false"
-                                            visible="{= ${chat>/messages}.length > 0}"
-                                            class="reflect-messages-scroll">
-                                            <List
-                                                id="messagesList"
-                                                items="{chat>/messages}"
-                                                showSeparators="None"
-                                                class="reflect-messages-list">
-                                                <CustomListItem
-                                                    type="Inactive"
-                                                    class="{= ${chat>role} === 'user' ? 'reflect-msg-user' : 'reflect-msg-assistant'}">
-                                                    <layout:VerticalLayout width="100%" class="sapUiSmallMargin">
-                                                        <HBox justifyContent="SpaceBetween" class="sapUiTinyMarginBottom">
-                                                            <Text
-                                                                text="{
-                                                                    path: 'chat>role',
-                                                                    formatter: '.formatter.formatRole'
-                                                                }"
-                                                                class="reflect-role-label"/>
-                                                            <Text
-                                                                text="{
-                                                                    path: 'chat>timestamp',
-                                                                    formatter: '.formatter.formatTime'
-                                                                }"
-                                                                class="reflect-time-label"/>
-                                                        </HBox>
-
-                                                        <!-- User message: plain text -->
+                                    <!-- Messages List -->
+                                    <ScrollContainer
+                                        id="messagesScroll"
+                                        height="100%"
+                                        vertical="true"
+                                        horizontal="false"
+                                        visible="{chat>/hasMessages}"
+                                        class="reflect-messages-scroll">
+                                        <List
+                                            id="messagesList"
+                                            items="{chat>/messages}"
+                                            showSeparators="None"
+                                            class="reflect-messages-list">
+                                            <CustomListItem
+                                                type="Inactive"
+                                                class="{= ${chat>role} === 'user' ? 'reflect-msg-user' : 'reflect-msg-assistant'}">
+                                                <layout:VerticalLayout width="100%" class="sapUiSmallMargin">
+                                                    <HBox justifyContent="SpaceBetween" class="sapUiTinyMarginBottom">
                                                         <Text
-                                                            text="{chat>content}"
-                                                            visible="{= ${chat>role} === 'user'}"
-                                                            renderWhitespace="true"
-                                                            class="reflect-user-text"/>
-
-                                                        <!-- Assistant message: rendered markdown -->
-                                                        <core:HTML
-                                                            content="{
-                                                                path: 'chat>content',
-                                                                formatter: '.formatAssistantContent'
+                                                            text="{
+                                                                path: 'chat>role',
+                                                                formatter: '.formatter.formatRole'
                                                             }"
-                                                            visible="{= ${chat>role} === 'assistant'}"
-                                                            class="reflect-assistant-content"
-                                                            sanitizeContent="false"/>
+                                                            class="reflect-role-label"/>
+                                                        <Text
+                                                            text="{
+                                                                path: 'chat>timestamp',
+                                                                formatter: '.formatter.formatTime'
+                                                            }"
+                                                            class="reflect-time-label"/>
+                                                    </HBox>
 
-                                                        <!-- Streaming indicator -->
-                                                        <HBox
-                                                            visible="{chat>isStreaming}"
-                                                            alignItems="Center"
-                                                            class="reflect-streaming">
-                                                            <BusyIndicator size="Small" class="sapUiTinyMarginEnd"/>
-                                                            <Text text="{i18n>messageStreaming}" class="reflect-streaming-label"/>
-                                                        </HBox>
-                                                    </layout:VerticalLayout>
-                                                </CustomListItem>
-                                            </List>
-                                        </ScrollContainer>
+                                                    <!-- User message: plain text -->
+                                                    <Text
+                                                        text="{chat>content}"
+                                                        visible="{= ${chat>role} === 'user'}"
+                                                        renderWhitespace="true"
+                                                        class="reflect-user-text"/>
 
-                                    </layout:VerticalLayout>
+                                                    <!-- Assistant message: rendered markdown -->
+                                                    <core:HTML
+                                                        content="{
+                                                            path: 'chat>content',
+                                                            formatter: '.formatAssistantContent'
+                                                        }"
+                                                        visible="{= ${chat>role} === 'assistant'}"
+                                                        class="reflect-assistant-content"
+                                                        sanitizeContent="false"/>
+
+                                                    <!-- Streaming indicator -->
+                                                    <HBox
+                                                        visible="{chat>isStreaming}"
+                                                        alignItems="Center"
+                                                        class="reflect-streaming">
+                                                        <BusyIndicator size="Small" class="sapUiTinyMarginEnd"/>
+                                                        <Text text="{i18n>messageStreaming}" class="reflect-streaming-label"/>
+                                                    </HBox>
+                                                </layout:VerticalLayout>
+                                            </CustomListItem>
+                                        </List>
+                                    </ScrollContainer>
                                 </content>
 
                                 <!-- Input Footer -->
                                 <footer>
                                     <Toolbar>
                                         <ToolbarSpacer/>
-                                        <layout:VerticalLayout width="100%" class="reflect-input-area">
+                                        <VBox width="100%" class="reflect-input-area">
                                             <HBox width="100%" alignItems="End">
                                                 <TextArea
                                                     id="chatInput"
@@ -275,7 +260,6 @@
                                                     text="{i18n>btnSend}"
                                                     type="Emphasized"
                                                     press="onSendMessage"
-                                                    enabled="{= !${chat>/isLoading} &amp;&amp; ${chat>/input}.length > 0}"
                                                     visible="{= !${chat>/isLoading}}"
                                                     class="reflect-send-btn"/>
                                                 <Button
@@ -293,7 +277,7 @@
                                                 }" class="reflect-char-count"/>
                                                 <Text text="{i18n>inputHint}" class="reflect-hint-text"/>
                                             </HBox>
-                                        </layout:VerticalLayout>
+                                        </VBox>
                                         <ToolbarSpacer/>
                                     </Toolbar>
                                 </footer>

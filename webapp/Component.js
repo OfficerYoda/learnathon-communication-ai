@@ -1,7 +1,6 @@
 sap.ui.define([
-    "sap/ui/core/UIComponent",
-    "sap/ui/model/json/JSONModel"
-], function (UIComponent, JSONModel) {
+    "sap/ui/core/UIComponent"
+], function (UIComponent) {
     "use strict";
 
     return UIComponent.extend("com.reflect.app.Component", {
@@ -16,9 +15,6 @@ sap.ui.define([
         init: function () {
             // Call the base component's init function
             UIComponent.prototype.init.apply(this, arguments);
-
-            // Initialize the router
-            this.getRouter().initialize();
         },
 
         destroy: function () {
