@@ -9,6 +9,7 @@
     "lint": "ui5lint"
   },
   "devDependencies": {
-    "@ui5/cli": "^4.0.0"
+    "@ui5/cli": "^4.0.0",
+    "ui5-middleware-simpleproxy": "^3.7.0"
   }
 }
