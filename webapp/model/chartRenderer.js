@@ -32,17 +32,23 @@ sap.ui.define([], function () {
     }
 
     /**
-     * Converts a hex color to rgba.
+     * Converts any CSS color string to an rgba() string with the given alpha.
+     * Uses a temporary canvas 2D context to resolve the color, which handles
+     * hex, rgb, rgba, hsl, hsla, and named colors.
+     * @param {string} sColor - Any valid CSS color
+     * @param {number} fAlpha - Alpha value 0–1
+     * @returns {string} rgba() color string
      */
-    function _hexToRgba(sHex, fAlpha) {
-        var sClean = sHex.replace("#", "");
-        if (sClean.length === 3) {
-            sClean = sClean[0] + sClean[0] + sClean[1] + sClean[1] + sClean[2] + sClean[2];
-        }
-        var r = parseInt(sClean.substr(0, 2), 16);
-        var g = parseInt(sClean.substr(2, 2), 16);
-        var b = parseInt(sClean.substr(4, 2), 16);
-        return "rgba(" + r + "," + g + "," + b + "," + fAlpha + ")";
+    function _colorWithAlpha(sColor, fAlpha) {
+        // Use an off-screen canvas to parse any CSS color into rgba components
+        var oCanvas = document.createElement("canvas");
+        oCanvas.width = 1;
+        oCanvas.height = 1;
+        var oCtx = oCanvas.getContext("2d");
+        oCtx.fillStyle = sColor;
+        oCtx.fillRect(0, 0, 1, 1);
+        var aPixel = oCtx.getImageData(0, 0, 1, 1).data;
+        return "rgba(" + aPixel[0] + "," + aPixel[1] + "," + aPixel[2] + "," + fAlpha + ")";
     }
 
     return {
@@ -201,7 +207,7 @@ sap.ui.define([], function () {
                     label: oDs.label || "Series " + (idx + 1),
                     data: oDs.values || [],
                     borderColor: sColor,
-                    backgroundColor: _hexToRgba(sColor, 0.15),
+                    backgroundColor: _colorWithAlpha(sColor, 0.15),
                     borderWidth: 2,
                     pointBackgroundColor: sColor,
                     pointBorderColor: oColors.listBg,
