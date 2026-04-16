@@ -7,9 +7,25 @@
     <title>Reflect — Communication Self-Reflection</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🪞</text></svg>" />
 
-    <!-- Third-party libraries (loaded before SAPUI5 to set globals) -->
+    <!--
+        Load third-party UMD libraries BEFORE SAPUI5 bootstrap.
+        Temporarily hide any AMD define() so the UMD modules fall through
+        to their global exports (window.marked, window.Chart).
+    -->
+    <script>
+        if (typeof define !== "undefined") {
+            window.__savedDefine = define;
+            define = undefined;
+        }
+    </script>
     <script src="lib/marked.min.js"></script>
     <script src="lib/chart.min.js"></script>
+    <script>
+        if (window.__savedDefine) {
+            define = window.__savedDefine;
+            delete window.__savedDefine;
+        }
+    </script>
 
     <script
         id="sap-ui-bootstrap"
@@ -20,6 +36,7 @@
         data-sap-ui-async="true"
         data-sap-ui-onInit="module:sap/ui/core/ComponentSupport"
         data-sap-ui-resourceroots='{ "com.reflect.app": "./" }'
+        data-sap-ui-excludeJQueryCompat="true"
     ></script>
 </head>
 <body class="sapUiBody" id="content">
