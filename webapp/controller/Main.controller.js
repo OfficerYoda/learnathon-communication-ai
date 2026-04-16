@@ -5,8 +5,9 @@ sap.ui.define([
     "sap/ui/core/Item",
     "com/reflect/app/model/api",
     "com/reflect/app/model/prompts",
-    "com/reflect/app/model/formatter"
-], function (Controller, JSONModel, SplitterLayoutData, Item, Api, Prompts, formatter) {
+    "com/reflect/app/model/formatter",
+    "com/reflect/app/model/chartRenderer"
+], function (Controller, JSONModel, SplitterLayoutData, Item, Api, Prompts, formatter, chartRenderer) {
     "use strict";
 
     var EMAIL_MODE_ID = "email-drafting";
@@ -16,8 +17,10 @@ sap.ui.define([
 
         formatter: formatter,
 
-        // ─── Abort controller for streaming ───
+        // ─── Instance state ───
         _oAbortController: null,
+        _sSystemPrompt: "",     // Shared system prompt content from _system.md
+        _oChartObserver: null,  // MutationObserver for chart initialization
 
         // ─── Lifecycle ────────────────────────────────────────
 
@@ -27,9 +30,16 @@ sap.ui.define([
             // Set up splitter layout data
             this._setupSplitter();
 
-            // Load prompt modes
             var sPromptsPath = sap.ui.require.toUrl("com/reflect/app/prompts");
-            Prompts.loadPromptModes(sPromptsPath).then(function (aModes) {
+
+            // Load system prompt and mode prompts in parallel
+            Promise.all([
+                Prompts.loadSystemPrompt(sPromptsPath),
+                Prompts.loadPromptModes(sPromptsPath)
+            ]).then(function (aResults) {
+                that._sSystemPrompt = aResults[0] || "";
+                var aModes = aResults[1];
+
                 var oConfigModel = that.getView().getModel("config");
                 oConfigModel.setProperty("/modes", aModes);
 
@@ -38,8 +48,6 @@ sap.ui.define([
                     oConfigModel.setProperty("/activeModeId", aModes[0].id);
                     oConfigModel.setProperty("/activeMode", aModes[0]);
                     oConfigModel.setProperty("/isEmailMode", aModes[0].id === EMAIL_MODE_ID);
-
-                    // Also set the list selection
                     that._selectModeInList(aModes[0].id);
                 }
             });
@@ -49,11 +57,8 @@ sap.ui.define([
                 var oConfigModel = that.getView().getModel("config");
                 oConfigModel.setProperty("/models", aModels);
                 oConfigModel.setProperty("/modelsLoading", false);
-
-                // Set the model select items
                 that._bindModelSelect(aModels);
 
-                // Set default model
                 if (aModels.length > 0) {
                     var sDefault = aModels.indexOf(DEFAULT_MODEL) !== -1 ? DEFAULT_MODEL : aModels[0];
                     oConfigModel.setProperty("/selectedModel", sDefault);
@@ -64,12 +69,21 @@ sap.ui.define([
 
             // Handle Enter key in the chat input
             this._attachInputKeyHandler();
+
+            // Set up MutationObserver for chart rendering
+            this._setupChartObserver();
+        },
+
+        onExit: function () {
+            if (this._oChartObserver) {
+                this._oChartObserver.disconnect();
+                this._oChartObserver = null;
+            }
         },
 
         // ─── Setup ────────────────────────────────────────────
 
         _setupSplitter: function () {
-            // Configure splitter layout after rendering
             var that = this;
             this.getView().addEventDelegate({
                 onAfterRendering: function () {
@@ -88,6 +102,45 @@ sap.ui.define([
                         }
                     }
                 }
+            });
+        },
+
+        _setupChartObserver: function () {
+            var that = this;
+            // Defer to ensure DOM is available
+            setTimeout(function () {
+                var oScroll = that.byId("messagesScroll");
+                if (!oScroll) return;
+
+                var oDom = oScroll.getDomRef();
+                if (!oDom) {
+                    // View not yet rendered, try again later
+                    that.getView().addEventDelegate({
+                        onAfterRendering: function () {
+                            that._startChartObserver();
+                        }
+                    });
+                    return;
+                }
+                that._startChartObserver();
+            }, 1000);
+        },
+
+        _startChartObserver: function () {
+            if (this._oChartObserver) return; // Already set up
+
+            var oScroll = this.byId("messagesScroll");
+            if (!oScroll || !oScroll.getDomRef()) return;
+
+            var oDom = oScroll.getDomRef();
+
+            this._oChartObserver = new MutationObserver(function () {
+                chartRenderer.initCharts(oDom);
+            });
+
+            this._oChartObserver.observe(oDom, {
+                childList: true,
+                subtree: true
             });
         },
 
@@ -122,7 +175,6 @@ sap.ui.define([
 
         _attachInputKeyHandler: function () {
             var that = this;
-            // Defer to ensure DOM is available
             setTimeout(function () {
                 var oInput = that.byId("chatInput");
                 if (oInput) {
@@ -169,7 +221,6 @@ sap.ui.define([
             oConfigModel.setProperty("/activeMode", oMode);
             oConfigModel.setProperty("/isEmailMode", sModeId === EMAIL_MODE_ID);
 
-            // Clear chat when switching modes
             this._clearChat();
         },
 
@@ -258,18 +309,24 @@ sap.ui.define([
             var aSelectedTones = oConfigModel.getProperty("/selectedTones") || [];
             var bIsEmailMode = oConfigModel.getProperty("/isEmailMode");
 
-            var sPrompt = oMode ? oMode.content : "";
+            // Start with the shared system prompt (chart tool docs)
+            var sPrompt = this._sSystemPrompt;
+
+            // Append the mode-specific prompt
+            if (oMode && oMode.content) {
+                sPrompt += "\n\n" + oMode.content;
+            }
 
             if (sRelationship) {
-                sPrompt += "\n\n## Current Context — Relationship\nThe user's relationship with the other party: " + sRelationship;
+                sPrompt += "\n\n## Current Context \u2014 Relationship\nThe user's relationship with the other party: " + sRelationship;
             }
 
             if (sSituation) {
-                sPrompt += "\n\n## Current Context — Situation\n" + sSituation;
+                sPrompt += "\n\n## Current Context \u2014 Situation\n" + sSituation;
             }
 
             if (bIsEmailMode && aSelectedTones.length > 0) {
-                sPrompt += "\n\n## Current Context — Desired Tone\nThe user wants the email to convey the following tone(s): " +
+                sPrompt += "\n\n## Current Context \u2014 Desired Tone\nThe user wants the email to convey the following tone(s): " +
                     aSelectedTones.join(", ") +
                     ". Ensure the drafted or overhauled email reflects these tonal qualities.";
             }
@@ -285,7 +342,6 @@ sap.ui.define([
             var sModel = oConfigModel.getProperty("/selectedModel");
             var aMessages = oChatModel.getProperty("/messages") || [];
 
-            // Create user message
             var oUserMsg = {
                 id: this._generateId(),
                 role: "user",
@@ -294,7 +350,6 @@ sap.ui.define([
                 isStreaming: false
             };
 
-            // Create placeholder assistant message
             var oAssistantMsg = {
                 id: this._generateId(),
                 role: "assistant",
@@ -303,7 +358,6 @@ sap.ui.define([
                 isStreaming: true
             };
 
-            // Build API messages from current state BEFORE updating
             var aApiMessages = [
                 { role: "system", content: this._buildSystemMessage() }
             ];
@@ -317,26 +371,25 @@ sap.ui.define([
 
             aApiMessages.push({ role: "user", content: sContent });
 
-            // Update the display
             var aNewMessages = aMessages.concat([oUserMsg, oAssistantMsg]);
             oChatModel.setProperty("/messages", aNewMessages);
             oChatModel.setProperty("/hasMessages", true);
             oChatModel.setProperty("/isLoading", true);
             oChatModel.setProperty("/input", "");
 
-            // Reset textarea
             var oInput = this.byId("chatInput");
             if (oInput) {
                 oInput.setValue("");
             }
 
-            // Scroll to bottom
             this._scrollToBottom();
 
-            // Create abort controller
+            // Ensure the chart observer is running (it may not have been
+            // started in onInit if the messagesScroll wasn't rendered yet)
+            this._startChartObserver();
+
             this._oAbortController = new AbortController();
 
-            // Stream the response
             Api.streamChat(
                 aApiMessages,
                 sModel,
@@ -360,6 +413,14 @@ sap.ui.define([
                         oChatModel.setProperty("/isLoading", false);
                         that._oAbortController = null;
                         that._scrollToBottom();
+
+                        // Final chart init pass after streaming completes
+                        setTimeout(function () {
+                            var oScroll = that.byId("messagesScroll");
+                            if (oScroll && oScroll.getDomRef()) {
+                                chartRenderer.initCharts(oScroll.getDomRef());
+                            }
+                        }, 100);
                     },
                     onError: function (sError) {
                         var aCurrentMessages = oChatModel.getProperty("/messages");

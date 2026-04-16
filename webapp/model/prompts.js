@@ -36,8 +36,23 @@ sap.ui.define([], function () {
             .replace(/\b\w/g, function (c) { return c.toUpperCase(); });
     }
 
-    // Registry of known prompt files
-    // Since SAPUI5 doesn't have Vite's import.meta.glob, we list them explicitly
+    /**
+     * Fetches a text file, returning empty string on failure.
+     * @param {string} sUrl
+     * @returns {Promise<string>}
+     */
+    function _fetchText(sUrl) {
+        return fetch(sUrl)
+            .then(function (res) {
+                if (!res.ok) return "";
+                return res.text();
+            })
+            .catch(function () {
+                return "";
+            });
+    }
+
+    // Registry of known prompt files (mode prompts only, not _system.md)
     var PROMPT_FILES = [
         "email-drafting",
         "nvc-communication"
@@ -46,37 +61,38 @@ sap.ui.define([], function () {
     return {
 
         /**
+         * Loads the shared system prompt (_system.md).
+         * @param {string} sBasePath - Base path to the prompts directory
+         * @returns {Promise<string>} The system prompt content (body only, no frontmatter)
+         */
+        loadSystemPrompt: function (sBasePath) {
+            return _fetchText(sBasePath + "/_system.md").then(function (sRaw) {
+                if (!sRaw) return "";
+                var oResult = _parseFrontmatter(sRaw);
+                return oResult.body.trim();
+            });
+        },
+
+        /**
          * Loads all prompt modes from the prompts/ directory.
          * Returns a Promise that resolves to an array of prompt mode objects.
-         * @param {string} sBasePath - Base path to the prompts directory (e.g., sap.ui.require.toUrl)
+         * @param {string} sBasePath - Base path to the prompts directory
          * @returns {Promise<Array>} Array of { id, title, description, icon, content }
          */
         loadPromptModes: function (sBasePath) {
             var aPromises = PROMPT_FILES.map(function (sFile) {
                 var sUrl = sBasePath + "/" + sFile + ".md";
-                return fetch(sUrl)
-                    .then(function (res) {
-                        if (!res.ok) {
-                            console.warn("Could not load prompt:", sFile, res.status);
-                            return null;
-                        }
-                        return res.text();
-                    })
-                    .then(function (sRaw) {
-                        if (!sRaw) return null;
-                        var oResult = _parseFrontmatter(sRaw);
-                        return {
-                            id: sFile,
-                            title: oResult.meta.title || _titleFromFilename(sFile),
-                            description: oResult.meta.description || "",
-                            icon: oResult.meta.icon || "\uD83D\uDCDD",
-                            content: oResult.body.trim()
-                        };
-                    })
-                    .catch(function (err) {
-                        console.warn("Error loading prompt:", sFile, err);
-                        return null;
-                    });
+                return _fetchText(sUrl).then(function (sRaw) {
+                    if (!sRaw) return null;
+                    var oResult = _parseFrontmatter(sRaw);
+                    return {
+                        id: sFile,
+                        title: oResult.meta.title || _titleFromFilename(sFile),
+                        description: oResult.meta.description || "",
+                        icon: oResult.meta.icon || "\uD83D\uDCDD",
+                        content: oResult.body.trim()
+                    };
+                });
             });
 
             return Promise.all(aPromises).then(function (aResults) {
