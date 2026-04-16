@@ -21,6 +21,7 @@ sap.ui.define([
         _oAbortController: null,
         _sSystemPrompt: "",     // Shared system prompt content from _system.md
         _oChartObserver: null,  // MutationObserver for chart initialization
+        _iRenderTimer: null,    // Throttle timer for markdown rendering during streaming
 
         // ─── Lifecycle ────────────────────────────────────────
 
@@ -293,12 +294,6 @@ sap.ui.define([
             return "Model: " + sDisplay + "  |  Session: " + sTime;
         },
 
-        formatAssistantContent: function (sContent) {
-            if (!sContent) return "<div></div>";
-            var sHtml = formatter.markdownToHtml(sContent);
-            return '<div class="reflect-markdown-body">' + sHtml + '</div>';
-        },
-
         // ─── Core Chat Logic ──────────────────────────────────
 
         _buildSystemMessage: function () {
@@ -354,6 +349,7 @@ sap.ui.define([
                 id: this._generateId(),
                 role: "assistant",
                 content: "",
+                contentHtml: "<div></div>",
                 timestamp: new Date().toISOString(),
                 isStreaming: true
             };
@@ -401,14 +397,30 @@ sap.ui.define([
                             var sPath = "/messages/" + iLast + "/content";
                             var sCurrentContent = oChatModel.getProperty(sPath) || "";
                             oChatModel.setProperty(sPath, sCurrentContent + sToken);
+
+                            // Throttle HTML rendering to every 100ms
+                            if (!that._iRenderTimer) {
+                                that._iRenderTimer = setTimeout(function () {
+                                    that._iRenderTimer = null;
+                                    that._renderAssistantHtml(oChatModel, iLast);
+                                }, 100);
+                            }
                         }
                         that._scrollToBottom();
                     },
                     onDone: function () {
+                        // Cancel any pending throttled render
+                        if (that._iRenderTimer) {
+                            clearTimeout(that._iRenderTimer);
+                            that._iRenderTimer = null;
+                        }
+
                         var aCurrentMessages = oChatModel.getProperty("/messages");
                         var iLast = aCurrentMessages.length - 1;
                         if (iLast >= 0 && aCurrentMessages[iLast].role === "assistant") {
                             oChatModel.setProperty("/messages/" + iLast + "/isStreaming", false);
+                            // Final render of complete content
+                            that._renderAssistantHtml(oChatModel, iLast);
                         }
                         oChatModel.setProperty("/isLoading", false);
                         that._oAbortController = null;
@@ -423,11 +435,17 @@ sap.ui.define([
                         }, 100);
                     },
                     onError: function (sError) {
+                        if (that._iRenderTimer) {
+                            clearTimeout(that._iRenderTimer);
+                            that._iRenderTimer = null;
+                        }
+
                         var aCurrentMessages = oChatModel.getProperty("/messages");
                         var iLast = aCurrentMessages.length - 1;
                         if (iLast >= 0 && aCurrentMessages[iLast].role === "assistant") {
                             oChatModel.setProperty("/messages/" + iLast + "/content", "Error: " + sError);
                             oChatModel.setProperty("/messages/" + iLast + "/isStreaming", false);
+                            that._renderAssistantHtml(oChatModel, iLast);
                         }
                         oChatModel.setProperty("/isLoading", false);
                         that._oAbortController = null;
@@ -439,11 +457,28 @@ sap.ui.define([
 
         _clearChat: function () {
             this.onStopStreaming();
+            if (this._iRenderTimer) {
+                clearTimeout(this._iRenderTimer);
+                this._iRenderTimer = null;
+            }
             var oChatModel = this.getView().getModel("chat");
             oChatModel.setProperty("/messages", []);
             oChatModel.setProperty("/hasMessages", false);
             oChatModel.setProperty("/isLoading", false);
             oChatModel.setProperty("/input", "");
+        },
+
+        /**
+         * Renders the markdown content of an assistant message to HTML
+         * and updates the contentHtml property in the model.
+         * @param {sap.ui.model.json.JSONModel} oChatModel
+         * @param {number} iIndex - Message index in /messages array
+         */
+        _renderAssistantHtml: function (oChatModel, iIndex) {
+            var sContent = oChatModel.getProperty("/messages/" + iIndex + "/content") || "";
+            var sHtml = formatter.markdownToHtml(sContent);
+            oChatModel.setProperty("/messages/" + iIndex + "/contentHtml",
+                '<div class="reflect-markdown-body">' + sHtml + '</div>');
         },
 
         _scrollToBottom: function () {

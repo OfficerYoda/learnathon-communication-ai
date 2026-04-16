@@ -212,10 +212,7 @@
 
                                                     <!-- Assistant message: rendered markdown -->
                                                     <core:HTML
-                                                        content="{
-                                                            path: 'chat>content',
-                                                            formatter: '.formatAssistantContent'
-                                                        }"
+                                                        content="{chat>contentHtml}"
                                                         visible="{= ${chat>role} === 'assistant'}"
                                                         class="reflect-assistant-content"
                                                         sanitizeContent="false"/>
