@@ -19,15 +19,15 @@ sap.ui.define([], function () {
     function _getThemeColors() {
         var oStyles = getComputedStyle(document.documentElement);
         return {
-            brand: oStyles.getPropertyValue("--sapBrandColor").trim() || "#0070f2",
-            positive: oStyles.getPropertyValue("--sapPositiveColor").trim() || "#30914c",
-            critical: oStyles.getPropertyValue("--sapCriticalColor").trim() || "#e76500",
-            negative: oStyles.getPropertyValue("--sapNegativeColor").trim() || "#bb0000",
-            neutral: oStyles.getPropertyValue("--sapNeutralColor").trim() || "#556b82",
-            labelColor: oStyles.getPropertyValue("--sapContent_LabelColor").trim() || "#556b82",
-            titleColor: oStyles.getPropertyValue("--sapTitleColor").trim() || "#1d2d3e",
-            borderColor: oStyles.getPropertyValue("--sapContent_ForegroundBorderColor").trim() || "#d9d9d9",
-            listBg: oStyles.getPropertyValue("--sapList_Background").trim() || "#ffffff"
+            brand: oStyles.getPropertyValue("--sapBrandColor").trim(),
+            positive: oStyles.getPropertyValue("--sapPositiveColor").trim(),
+            critical: oStyles.getPropertyValue("--sapCriticalColor").trim(),
+            negative: oStyles.getPropertyValue("--sapNegativeColor").trim(),
+            neutral: oStyles.getPropertyValue("--sapNeutralColor").trim(),
+            labelColor: oStyles.getPropertyValue("--sapContent_LabelColor").trim(),
+            titleColor: oStyles.getPropertyValue("--sapTitleColor").trim(),
+            borderColor: oStyles.getPropertyValue("--sapContent_ForegroundBorderColor").trim(),
+            listBg: oStyles.getPropertyValue("--sapList_Background").trim()
         };
     }
 

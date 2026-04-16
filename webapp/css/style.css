@@ -364,7 +364,7 @@
 }
 
 .reflect-gauge-fill-original {
-    background: color-mix(in srgb, var(--sapBrandColor, #0070f2) 40%, transparent);
+    background: var(--sapBrandColor, #0070f2);
 }
 
 .reflect-gauge-fill-improved {
@@ -406,7 +406,7 @@
 }
 
 .reflect-gauge-legend-original {
-    background: color-mix(in srgb, var(--sapBrandColor, #0070f2) 40%, transparent);
+    background: var(--sapBrandColor, #0070f2);
 }
 
 .reflect-gauge-legend-improved {

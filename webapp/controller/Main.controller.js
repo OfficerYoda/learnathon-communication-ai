@@ -398,12 +398,12 @@ sap.ui.define([
                             var sCurrentContent = oChatModel.getProperty(sPath) || "";
                             oChatModel.setProperty(sPath, sCurrentContent + sToken);
 
-                            // Throttle HTML rendering to every 100ms
+                            // Throttle HTML rendering to every 1000ms
                             if (!that._iRenderTimer) {
                                 that._iRenderTimer = setTimeout(function () {
                                     that._iRenderTimer = null;
                                     that._renderAssistantHtml(oChatModel, iLast);
-                                }, 100);
+                                }, 1000);
                             }
                         }
                         that._scrollToBottom();
