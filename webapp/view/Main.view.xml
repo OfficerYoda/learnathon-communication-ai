@@ -225,7 +225,7 @@
                                                         visible="{chat>isStreaming}"
                                                         alignItems="Center"
                                                         class="reflect-streaming">
-                                                        <BusyIndicator size="Small" class="sapUiTinyMarginEnd"/>
+                                                        <BusyIndicator size="1rem" class="sapUiTinyMarginEnd"/>
                                                         <Text text="{i18n>messageStreaming}" class="reflect-streaming-label"/>
                                                     </HBox>
                                                 </layout:VerticalLayout>

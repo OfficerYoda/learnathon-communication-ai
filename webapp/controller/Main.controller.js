@@ -223,7 +223,7 @@ sap.ui.define([
 
         formatInputPlaceholder: function (sModeTitle) {
             if (sModeTitle) {
-                return "Message \u2014 " + sModeTitle + "...";
+                return "Message...";
             }
             return "Type your message...";
         },
