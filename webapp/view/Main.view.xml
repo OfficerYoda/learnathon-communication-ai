@@ -210,26 +210,25 @@
                                                         renderWhitespace="true"
                                                         class="reflect-user-text"/>
 
+                                                    <!-- Assistant message: loading state -->
+                                                    <HBox
+                                                        visible="{= ${chat>role} === 'assistant' &amp;&amp; ${chat>isLoading} === true}"
+                                                        alignItems="Center"
+                                                        class="reflect-streaming">
+                                                        <BusyIndicator size="1rem" class="sapUiTinyMarginEnd"/>
+                                                        <Text text="{i18n>messageStreaming}" class="reflect-streaming-label"/>
+                                                    </HBox>
+
                                                     <!-- Assistant message: rendered markdown -->
                                                     <core:HTML
                                                         content="{chat>contentHtml}"
-                                                        visible="{= ${chat>role} === 'assistant'}"
+                                                        visible="{= ${chat>role} === 'assistant' &amp;&amp; ${chat>isLoading} !== true}"
                                                         class="reflect-assistant-content"
                                                         sanitizeContent="false"/>
 
                                                 </layout:VerticalLayout>
                                             </CustomListItem>
                                         </List>
-
-                                        <!-- Loading indicator (shown while waiting for response) -->
-                                        <HBox
-                                            visible="{chat>/isLoading}"
-                                            alignItems="Center"
-                                            justifyContent="Center"
-                                            class="sapUiSmallMargin">
-                                            <BusyIndicator size="1rem" class="sapUiTinyMarginEnd"/>
-                                            <Text text="{i18n>messageStreaming}" class="reflect-streaming-label"/>
-                                        </HBox>
                                     </ScrollContainer>
                                 </content>
 

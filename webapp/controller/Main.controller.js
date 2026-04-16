@@ -341,7 +341,18 @@ sap.ui.define([
                 role: "user",
                 content: sContent,
                 contentHtml: "",
-                timestamp: new Date().toISOString()
+                timestamp: new Date().toISOString(),
+                isLoading: false
+            };
+
+            // Placeholder assistant message (shows "generating" state)
+            var oAssistantMsg = {
+                id: this._generateId(),
+                role: "assistant",
+                content: "",
+                contentHtml: "",
+                timestamp: new Date().toISOString(),
+                isLoading: true
             };
 
             // Build API messages
@@ -358,8 +369,10 @@ sap.ui.define([
 
             aApiMessages.push({ role: "user", content: sContent });
 
-            // Add user message and show loading state
-            var aNewMessages = aMessages.concat([oUserMsg]);
+            // Add user message + placeholder assistant message
+            var aNewMessages = aMessages.concat([oUserMsg, oAssistantMsg]);
+            var iAssistantIdx = aNewMessages.length - 1;
+
             oChatModel.setProperty("/messages", aNewMessages);
             oChatModel.setProperty("/hasMessages", true);
             oChatModel.setProperty("/isLoading", true);
@@ -371,27 +384,20 @@ sap.ui.define([
             }
 
             this._scrollToBottom();
-
-            // Ensure the chart observer is running
             this._startChartObserver();
 
             this._oAbortController = new AbortController();
 
-            // Send non-streaming request
+            // Send non-streaming request, update placeholder on completion
             Api.sendChat(aApiMessages, sModel, this._oAbortController.signal)
                 .then(function (sResponse) {
                     var sHtml = formatter.markdownToHtml(sResponse);
+                    var sBasePath = "/messages/" + iAssistantIdx;
 
-                    var oAssistantMsg = {
-                        id: that._generateId(),
-                        role: "assistant",
-                        content: sResponse,
-                        contentHtml: '<div class="reflect-markdown-body">' + sHtml + '</div>',
-                        timestamp: new Date().toISOString()
-                    };
-
-                    var aCurrent = oChatModel.getProperty("/messages");
-                    oChatModel.setProperty("/messages", aCurrent.concat([oAssistantMsg]));
+                    oChatModel.setProperty(sBasePath + "/content", sResponse);
+                    oChatModel.setProperty(sBasePath + "/contentHtml",
+                        '<div class="reflect-markdown-body">' + sHtml + '</div>');
+                    oChatModel.setProperty(sBasePath + "/isLoading", false);
                     oChatModel.setProperty("/isLoading", false);
                     that._oAbortController = null;
                     that._scrollToBottom();
@@ -405,23 +411,24 @@ sap.ui.define([
                     }, 150);
                 })
                 .catch(function (err) {
+                    var sBasePath = "/messages/" + iAssistantIdx;
+
                     if (err.name === "AbortError") {
+                        // Remove the placeholder on abort
+                        var aCurrent = oChatModel.getProperty("/messages");
+                        aCurrent.splice(iAssistantIdx, 1);
+                        oChatModel.setProperty("/messages", aCurrent);
                         oChatModel.setProperty("/isLoading", false);
                         that._oAbortController = null;
                         return;
                     }
 
-                    var oErrorMsg = {
-                        id: that._generateId(),
-                        role: "assistant",
-                        content: "Error: " + err.message,
-                        contentHtml: '<div class="reflect-markdown-body"><p>Error: ' +
-                            err.message.replace(/</g, "&lt;").replace(/>/g, "&gt;") + '</p></div>',
-                        timestamp: new Date().toISOString()
-                    };
+                    var sErrHtml = '<div class="reflect-markdown-body"><p>Error: ' +
+                        err.message.replace(/</g, "&lt;").replace(/>/g, "&gt;") + '</p></div>';
 
-                    var aCurrent = oChatModel.getProperty("/messages");
-                    oChatModel.setProperty("/messages", aCurrent.concat([oErrorMsg]));
+                    oChatModel.setProperty(sBasePath + "/content", "Error: " + err.message);
+                    oChatModel.setProperty(sBasePath + "/contentHtml", sErrHtml);
+                    oChatModel.setProperty(sBasePath + "/isLoading", false);
                     oChatModel.setProperty("/isLoading", false);
                     that._oAbortController = null;
                 });
