@@ -1,0 +1,252 @@
+/* ═══════════════════════════════════════════════════════════
+   Reflect — Custom CSS additions for SAP Horizon theme
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── Chat Layout ────────────────────────────────────────── */
+
+.reflect-chat-layout {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+.reflect-messages-scroll {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    padding: 0.5rem;
+}
+
+.reflect-messages-list .sapMListUl {
+    padding: 0;
+}
+
+.reflect-empty-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1 1 auto;
+    padding: 2rem;
+}
+
+/* ─── Message Styling ────────────────────────────────────── */
+
+.reflect-msg-user {
+    background-color: var(--sapList_SelectionBackgroundColor, #e8f0fe);
+    border-radius: 0.5rem;
+    margin: 0.25rem 0.5rem;
+}
+
+.reflect-msg-assistant {
+    background-color: var(--sapList_Background, #ffffff);
+    border-radius: 0.5rem;
+    margin: 0.25rem 0.5rem;
+    border-left: 3px solid var(--sapBrandColor, #0070f2);
+}
+
+.reflect-role-label {
+    font-weight: 600;
+    font-size: 0.8125rem;
+    color: var(--sapContent_LabelColor, #556b82);
+}
+
+.reflect-time-label {
+    font-size: 0.6875rem;
+    color: var(--sapContent_LabelColor, #556b82);
+    font-family: "72Mono", monospace;
+}
+
+.reflect-user-text {
+    white-space: pre-wrap;
+    line-height: 1.5;
+}
+
+/* ─── Streaming Indicator ─────────────────────────────────── */
+
+.reflect-streaming {
+    margin-top: 0.25rem;
+}
+
+.reflect-streaming-label {
+    font-size: 0.75rem;
+    font-style: italic;
+    color: var(--sapContent_LabelColor, #556b82);
+}
+
+/* ─── Input Area ──────────────────────────────────────────── */
+
+.reflect-input-area {
+    padding: 0.25rem 0;
+}
+
+.reflect-chat-input .sapMInputBaseInner {
+    min-height: 2.5rem;
+}
+
+.reflect-char-count {
+    font-size: 0.6875rem;
+    color: var(--sapContent_LabelColor, #556b82);
+    font-family: "72Mono", monospace;
+}
+
+.reflect-hint-text {
+    font-size: 0.6875rem;
+    color: var(--sapContent_LabelColor, #556b82);
+    font-style: italic;
+}
+
+.reflect-model-label {
+    font-size: 0.6875rem;
+    color: var(--sapContent_LabelColor, #556b82);
+    font-family: "72Mono", monospace;
+    margin-right: 0.5rem;
+}
+
+.reflect-meta-text {
+    font-size: 0.75rem;
+    color: var(--sapContent_LabelColor, #556b82);
+    margin-top: 0.5rem;
+}
+
+/* ─── Markdown Body Styling (AI Responses) ───────────────── */
+
+.reflect-markdown-body {
+    line-height: 1.6;
+    font-size: 0.875rem;
+}
+
+.reflect-markdown-body .reflect-h1 {
+    font-size: 1.375rem;
+    font-weight: 700;
+    margin: 1rem 0 0.5rem;
+    color: var(--sapTitleColor, #1d2d3e);
+}
+
+.reflect-markdown-body .reflect-h2 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin: 0.875rem 0 0.375rem;
+    color: var(--sapTitleColor, #1d2d3e);
+}
+
+.reflect-markdown-body .reflect-h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0.75rem 0 0.25rem;
+    color: var(--sapTitleColor, #1d2d3e);
+}
+
+.reflect-markdown-body .reflect-h4 {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    margin: 0.5rem 0 0.25rem;
+    color: var(--sapTitleColor, #1d2d3e);
+}
+
+.reflect-markdown-body .reflect-p {
+    margin: 0.375rem 0;
+}
+
+.reflect-markdown-body strong {
+    font-weight: 600;
+}
+
+.reflect-markdown-body em {
+    font-style: italic;
+}
+
+.reflect-markdown-body .reflect-ul,
+.reflect-markdown-body .reflect-ol {
+    margin: 0.375rem 0;
+    padding-left: 1.5rem;
+}
+
+.reflect-markdown-body .reflect-ul li,
+.reflect-markdown-body .reflect-ol li {
+    margin: 0.125rem 0;
+}
+
+.reflect-markdown-body .reflect-blockquote {
+    border-left: 3px solid var(--sapBrandColor, #0070f2);
+    padding: 0.5rem 0.75rem;
+    margin: 0.5rem 0;
+    background-color: var(--sapInfobar_Background, #f0f5fa);
+    border-radius: 0 0.25rem 0.25rem 0;
+    font-style: italic;
+}
+
+.reflect-markdown-body .reflect-code-block {
+    background-color: var(--sapShell_Background, #f5f6f7);
+    border: 1px solid var(--sapContent_ForegroundBorderColor, #d9d9d9);
+    border-radius: 0.375rem;
+    padding: 0.75rem 1rem;
+    margin: 0.5rem 0;
+    overflow-x: auto;
+    font-family: "72Mono", "Courier New", monospace;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+}
+
+.reflect-markdown-body .reflect-code-block code {
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+.reflect-markdown-body .reflect-inline-code {
+    background-color: var(--sapShell_Background, #f5f6f7);
+    border: 1px solid var(--sapContent_ForegroundBorderColor, #d9d9d9);
+    border-radius: 0.25rem;
+    padding: 0.1em 0.3em;
+    font-family: "72Mono", "Courier New", monospace;
+    font-size: 0.8125rem;
+}
+
+.reflect-markdown-body .reflect-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.5rem 0;
+    font-size: 0.8125rem;
+}
+
+.reflect-markdown-body .reflect-table th,
+.reflect-markdown-body .reflect-table td {
+    border: 1px solid var(--sapContent_ForegroundBorderColor, #d9d9d9);
+    padding: 0.375rem 0.5rem;
+    text-align: left;
+}
+
+.reflect-markdown-body .reflect-table th {
+    background-color: var(--sapList_HeaderBackground, #f5f6f7);
+    font-weight: 600;
+}
+
+.reflect-markdown-body .reflect-table tr:nth-child(even) td {
+    background-color: var(--sapList_AlternatingBackground, #fafafa);
+}
+
+.reflect-markdown-body .reflect-hr {
+    border: none;
+    border-top: 1px solid var(--sapContent_ForegroundBorderColor, #d9d9d9);
+    margin: 0.75rem 0;
+}
+
+.reflect-markdown-body a {
+    color: var(--sapLinkColor, #0064d9);
+    text-decoration: none;
+}
+
+.reflect-markdown-body a:hover {
+    text-decoration: underline;
+}
+
+/* ─── Assistant Content container ────────────────────────── */
+
+.reflect-assistant-content {
+    width: 100%;
+}
+
+/* Override UI5's HTML control default styling */
+.reflect-assistant-content > div {
+    width: 100%;
+}

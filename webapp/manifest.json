@@ -1,0 +1,116 @@
+{
+  "_version": "1.65.0",
+  "sap.app": {
+    "id": "com.reflect.app",
+    "type": "application",
+    "i18n": {
+      "bundleUrl": "i18n/i18n.properties",
+      "supportedLocales": ["en", ""],
+      "fallbackLocale": ""
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "applicationVersion": {
+      "version": "1.0.0"
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "dependencies": {
+      "minUI5Version": "1.132.0",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.ui.layout": {},
+        "sap.f": {},
+        "sap.tnt": {},
+        "sap.ui.unified": {}
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "com.reflect.app.i18n.i18n"
+        }
+      },
+      "chat": {
+        "type": "sap.ui.model.json.JSONModel",
+        "settings": {
+          "data": {
+            "messages": [],
+            "isLoading": false,
+            "input": "",
+            "charCount": 0
+          }
+        }
+      },
+      "config": {
+        "type": "sap.ui.model.json.JSONModel",
+        "settings": {
+          "data": {
+            "modes": [],
+            "models": [],
+            "modelsLoading": true,
+            "activeModeId": "",
+            "selectedModel": "",
+            "relationship": "",
+            "situation": "",
+            "selectedTones": [],
+            "isEmailMode": false,
+            "activeMode": null,
+            "sidebarExpanded": true
+          }
+        }
+      }
+    },
+    "rootView": {
+      "viewName": "com.reflect.app.view.Main",
+      "type": "XML",
+      "id": "mainView",
+      "async": true
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "type": "View",
+        "viewType": "XML",
+        "viewPath": "com.reflect.app.view",
+        "controlId": "mainApp",
+        "controlAggregation": "pages",
+        "async": true
+      },
+      "routes": [
+        {
+          "name": "main",
+          "pattern": "",
+          "target": "main"
+        }
+      ],
+      "targets": {
+        "main": {
+          "id": "mainView",
+          "name": "Main"
+        }
+      }
+    }
+  }
+}

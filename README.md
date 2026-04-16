@@ -1,73 +1,88 @@
-# React + TypeScript + Vite
+# Reflect — Communication Self-Reflection (SAPUI5)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An AI-powered communication self-reflection tool built with SAPUI5. Analyze messages using Nonviolent Communication (NVC) principles or draft/overhaul emails with intelligent tone calibration.
 
-Currently, two official plugins are available:
+## Technology Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **UI Framework**: SAPUI5 1.132.0 (OpenUI5 CDN)
+- **Theme**: SAP Horizon (`sap_horizon`)
+- **Architecture**: MVC (Model-View-Controller)
+- **Build Tool**: UI5 CLI (`@ui5/cli`)
+- **Backend**: LiteLLM proxy (localhost:6655) for LLM chat streaming
 
-## React Compiler
+## Project Structure
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+webapp/
+├── Component.js              # App entry point
+├── manifest.json             # Central application descriptor
+├── index.html                # Bootstrap page
+├── view/
+│   └── Main.view.xml         # Main chat UI (XML view)
+├── controller/
+│   └── Main.controller.js    # Chat logic, streaming, event handlers
+├── model/
+│   ├── api.js                # LiteLLM API: fetchModels() + streamChat()
+│   ├── prompts.js            # Loads prompt modes from markdown files
+│   └── formatter.js          # View formatters (time, markdown-to-HTML)
+├── i18n/
+│   ├── i18n.properties       # UI text strings (default)
+│   └── i18n_en.properties    # English locale
+├── prompts/
+│   ├── email-drafting.md     # Email Drafting & Overhaul system prompt
+│   └── nvc-communication.md  # NVC Communication Analysis system prompt
+└── css/
+    └── style.css             # Custom styles (extends SAP Horizon)
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Getting Started
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Prerequisites
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- Node.js 18+
+- A running LiteLLM proxy at `localhost:6655`
+
+### Install Dependencies
+
+```bash
+npm install
+```
+
+### Development Server
+
+```bash
+npm start
+```
+
+This opens `http://localhost:8080/index.html` with the UI5 development server.
+
+### Production Build
+
+```bash
+npm run build
+```
+
+Output is written to `dist/`.
+
+## Features
+
+- **NVC Communication Analysis**: Paste a message and get a scored analysis across 8 dimensions (Clarity, Empathy, Tonality, etc.) with NVC-aligned alternatives
+- **Email Drafting & Overhaul**: Draft new emails or improve existing ones with configurable tone selection
+- **Streaming Responses**: Real-time token streaming via SSE from the LiteLLM proxy
+- **Ephemeral Sessions**: No data persistence; everything resets on page refresh
+- **Configurable Context**: Set relationship type and situation description to inform AI responses
+- **Model Selection**: Dynamically fetches available models from the LiteLLM proxy
+
+## API Key Configuration
+
+Pass the API key as a URL parameter:
+
+```
+http://localhost:8080/index.html?api-key=YOUR_KEY
+```
+
+Or set it globally before the app loads:
+
+```javascript
+window.__REFLECT_API_KEY = "your-key-here";
 ```

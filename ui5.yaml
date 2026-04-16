@@ -1,0 +1,24 @@
+specVersion: "3.0"
+metadata:
+  name: reflect
+type: application
+framework:
+  name: SAPUI5
+  version: "1.132.0"
+  libraries:
+    - name: sap.m
+    - name: sap.ui.core
+    - name: sap.ui.layout
+    - name: sap.f
+    - name: sap.tnt
+    - name: sap.ui.unified
+server:
+  customMiddleware:
+    - name: ui5-middleware-proxy
+      afterMiddleware: compression
+      configuration:
+        paths:
+          - path: /api
+            target: http://localhost:6655/litellm/v1
+            pathRewrite:
+              "^/api": ""
