@@ -38,11 +38,10 @@
                                 <layout:VerticalLayout class="sapUiSmallMargin" width="100%">
 
                                     <Title text="{i18n>sidebarLogo}" level="H3" class="sapUiSmallMarginBottom"/>
-
-                                    <!-- Modules Section -->
-                                    <Panel headerText="{i18n>sidebarModulesLabel}" expandable="false" class="sapUiTinyMarginBottom">
+                                    <!-- Modes Section -->
+                                    <Panel headerText="{i18n>sidebarModesLabel}" expandable="false" class="sapUiTinyMarginBottom">
                                         <List
-                                            id="modulesList"
+                                            id="modesList"
                                             items="{config>/modes}"
                                             mode="SingleSelectMaster"
                                             selectionChange="onModeChange"

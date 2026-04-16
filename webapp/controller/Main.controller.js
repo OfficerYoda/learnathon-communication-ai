@@ -105,7 +105,7 @@ sap.ui.define([
         },
 
         _selectModeInList: function (sModeId) {
-            var oList = this.byId("modulesList");
+            var oList = this.byId("modesList");
             if (!oList) return;
 
             var aItems = oList.getItems();
