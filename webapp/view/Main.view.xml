@@ -33,9 +33,10 @@
                                 id="configPanel"
                                 height="100%"
                                 vertical="true"
-                                horizontal="false">
+                                horizontal="false"
+                                class="reflect-sidebar-scroll">
 
-                                <layout:VerticalLayout class="sapUiSmallMargin" width="100%">
+                                <layout:VerticalLayout class="sapUiTinyMargin" width="auto">
 
                                     <Title text="{i18n>sidebarLogo}" level="H3" class="sapUiSmallMarginBottom"/>
                                     <!-- Modes Section -->
@@ -60,7 +61,7 @@
 
                                     <!-- Configuration Section -->
                                     <Panel headerText="{i18n>sidebarConfigLabel}" expandable="false">
-                                        <layout:VerticalLayout width="100%" class="sapUiSmallMargin">
+                                        <layout:VerticalLayout width="100%">
 
                                             <Label text="{i18n>sidebarRelationshipLabel}" labelFor="relationshipInput"/>
                                             <Input
@@ -142,7 +143,7 @@
                                                 icon="sap-icon://decline"
                                                 type="Reject"
                                                 press="onClearChat"
-                                                visible="{chat>/hasMessages}"/>
+                                                visible="{= ${chat>/hasMessages} === true}"/>
                                         </contentRight>
                                     </Bar>
                                 </customHeader>
@@ -236,48 +237,33 @@
 
                                 <!-- Input Footer -->
                                 <footer>
-                                    <Toolbar>
-                                        <ToolbarSpacer/>
-                                        <VBox width="100%" class="reflect-input-area">
-                                            <HBox width="100%" alignItems="End">
-                                                <TextArea
-                                                    id="chatInput"
-                                                    value="{chat>/input}"
-                                                    placeholder="{
-                                                        path: 'config>/activeMode/title',
-                                                        formatter: '.formatInputPlaceholder'
-                                                    }"
-                                                    rows="1"
-                                                    growing="true"
-                                                    growingMaxLines="5"
-                                                    width="100%"
-                                                    liveChange="onInputChange"
-                                                    enabled="{= !${chat>/isLoading}}"
-                                                    class="reflect-chat-input sapUiTinyMarginEnd"/>
-                                                <Button
-                                                    id="sendBtn"
-                                                    text="{i18n>btnSend}"
-                                                    type="Emphasized"
-                                                    press="onSendMessage"
-                                                    visible="{= !${chat>/isLoading}}"
-                                                    class="reflect-send-btn"/>
-                                                <Button
-                                                    id="stopBtn"
-                                                    text="{i18n>btnStop}"
-                                                    type="Reject"
-                                                    press="onStopStreaming"
-                                                    visible="{chat>/isLoading}"
-                                                    class="reflect-stop-btn"/>
-                                            </HBox>
-                                            <HBox justifyContent="SpaceBetween" width="100%" class="sapUiTinyMarginTop">
-                                                <Text text="{
-                                                    path: 'chat>/input',
-                                                    formatter: '.formatCharCount'
-                                                }" class="reflect-char-count"/>
-                                                <Text text="{i18n>inputHint}" class="reflect-hint-text"/>
-                                            </HBox>
-                                        </VBox>
-                                        <ToolbarSpacer/>
+                                    <Toolbar class="reflect-footer-toolbar">
+                                        <TextArea
+                                            id="chatInput"
+                                            value="{chat>/input}"
+                                            placeholder="{
+                                                path: 'config>/activeMode/title',
+                                                formatter: '.formatInputPlaceholder'
+                                            }"
+                                            rows="1"
+                                            growing="true"
+                                            growingMaxLines="5"
+                                            width="100%"
+                                            liveChange="onInputChange"
+                                            enabled="{= !${chat>/isLoading}}"
+                                            class="reflect-chat-input"/>
+                                        <Button
+                                            id="sendBtn"
+                                            text="{i18n>btnSend}"
+                                            type="Emphasized"
+                                            press="onSendMessage"
+                                            visible="{= !${chat>/isLoading}}"/>
+                                        <Button
+                                            id="stopBtn"
+                                            text="{i18n>btnStop}"
+                                            type="Reject"
+                                            press="onStopStreaming"
+                                            visible="{= ${chat>/isLoading} === true}"/>
                                     </Toolbar>
                                 </footer>
 

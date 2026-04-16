@@ -2,6 +2,17 @@
    Reflect — Custom CSS additions for SAP Horizon theme
    ═══════════════════════════════════════════════════════════ */
 
+/* ─── Sidebar ────────────────────────────────────────────── */
+
+.reflect-sidebar-scroll {
+    overflow-x: auto;
+}
+
+.reflect-sidebar-scroll > div {
+    box-sizing: border-box;
+    overflow-x: auto;
+}
+
 /* ─── Chat Layout ────────────────────────────────────────── */
 
 .reflect-chat-layout {
@@ -75,8 +86,14 @@
 
 /* ─── Input Area ──────────────────────────────────────────── */
 
-.reflect-input-area {
-    padding: 0.25rem 0;
+.reflect-footer-toolbar.sapMTB {
+    padding: 0.25rem 0.5rem;
+    height: auto;
+}
+
+.reflect-chat-input {
+    flex: 1 1 auto;
+    margin-right: 0.5rem;
 }
 
 .reflect-chat-input .sapMInputBaseInner {
