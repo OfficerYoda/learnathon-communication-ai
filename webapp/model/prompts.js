@@ -53,9 +53,10 @@ sap.ui.define([], function () {
     }
 
     // Registry of known prompt files (mode prompts only, not _system.md)
+    // Order here determines display order in the sidebar
     var PROMPT_FILES = [
-        "email-drafting",
-        "nvc-communication"
+        "nvc-communication",
+        "email-drafting"
     ];
 
     return {
@@ -96,9 +97,7 @@ sap.ui.define([], function () {
             });
 
             return Promise.all(aPromises).then(function (aResults) {
-                return aResults
-                    .filter(function (o) { return o !== null; })
-                    .sort(function (a, b) { return a.title.localeCompare(b.title); });
+                return aResults.filter(function (o) { return o !== null; });
             });
         }
     };
