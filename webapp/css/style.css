@@ -4,15 +4,6 @@
 
 /* ─── Sidebar ────────────────────────────────────────────── */
 
-.reflect-sidebar-scroll {
-    overflow-x: auto;
-}
-
-.reflect-sidebar-scroll > div {
-    box-sizing: border-box;
-    overflow-x: auto;
-}
-
 /* ─── Chat Layout ────────────────────────────────────────── */
 
 .reflect-chat-layout {

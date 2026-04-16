@@ -7,7 +7,7 @@
     xmlns:tnt="sap.tnt"
     height="100%">
 
-    <tnt:ToolPage id="mainToolPage" sideExpanded="{config>/sidebarExpanded}">
+    <tnt:ToolPage id="mainToolPage" sideExpanded="false">
 
         <!-- Side Navigation (decorative header only) -->
         <tnt:sideContent>
@@ -33,10 +33,9 @@
                                 id="configPanel"
                                 height="100%"
                                 vertical="true"
-                                horizontal="false"
-                                class="reflect-sidebar-scroll">
+                                horizontal="false">
 
-                                <layout:VerticalLayout class="sapUiTinyMargin" width="auto">
+                                <layout:VerticalLayout class="sapUiTinyMargin" width="100%">
 
                                     <Title text="{i18n>sidebarLogo}" level="H3" class="sapUiSmallMarginBottom"/>
                                     <!-- Modes Section -->

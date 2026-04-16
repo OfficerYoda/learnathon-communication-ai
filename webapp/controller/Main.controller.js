@@ -78,7 +78,7 @@ sap.ui.define([
                         var aAreas = oSplitter.getContentAreas();
                         if (aAreas.length >= 2) {
                             aAreas[0].setLayoutData(new SplitterLayoutData({
-                                size: "280px",
+                                size: "auto",
                                 minSize: 200
                             }));
                             aAreas[1].setLayoutData(new SplitterLayoutData({
