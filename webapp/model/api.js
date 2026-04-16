@@ -4,8 +4,6 @@ sap.ui.define([], function () {
     var API_BASE_URL = "/api";
 
     function _getApiKey() {
-        // In SAPUI5, we read the API key from a global config or URL parameter
-        // For development, you can set it via URL: ?sap-ui-api-key=YOUR_KEY
         var oUriParams = new URLSearchParams(window.location.search);
         return oUriParams.get("api-key") || window.__REFLECT_API_KEY || "";
     }
@@ -41,14 +39,14 @@ sap.ui.define([], function () {
         },
 
         /**
-         * Streams a chat completion from the LiteLLM proxy using SSE.
+         * Sends a chat completion request (non-streaming) and returns
+         * the full assistant response content.
          * @param {Array} aMessages - Array of {role, content} message objects
          * @param {string} sModel - The model ID to use
-         * @param {object} oCallbacks - {onToken, onDone, onError} callbacks
          * @param {AbortSignal} [oAbortSignal] - Optional abort signal
-         * @returns {Promise<void>}
+         * @returns {Promise<string>} The assistant's response text
          */
-        streamChat: function (aMessages, sModel, oCallbacks, oAbortSignal) {
+        sendChat: function (aMessages, sModel, oAbortSignal) {
             return fetch(API_BASE_URL + "/chat/completions", {
                 method: "POST",
                 headers: {
@@ -58,7 +56,7 @@ sap.ui.define([], function () {
                 body: JSON.stringify({
                     model: sModel,
                     messages: aMessages,
-                    stream: true,
+                    stream: false,
                     temperature: 0.7,
                     max_tokens: 4096
                 }),
@@ -67,67 +65,17 @@ sap.ui.define([], function () {
             .then(function (res) {
                 if (!res.ok) {
                     return res.text().then(function (sBody) {
-                        oCallbacks.onError("API error " + res.status + ": " + sBody);
+                        throw new Error("API error " + res.status + ": " + sBody);
                     });
                 }
-
-                var oReader = res.body && res.body.getReader();
-                if (!oReader) {
-                    oCallbacks.onError("No response body");
-                    return;
-                }
-
-                var oDecoder = new TextDecoder();
-                var sBuffer = "";
-
-                function pump() {
-                    return oReader.read().then(function (result) {
-                        if (result.done) {
-                            oCallbacks.onDone();
-                            return;
-                        }
-
-                        sBuffer += oDecoder.decode(result.value, { stream: true });
-                        var aLines = sBuffer.split("\n");
-                        sBuffer = aLines.pop() || "";
-
-                        for (var i = 0; i < aLines.length; i++) {
-                            var sTrimmed = aLines[i].trim();
-                            if (!sTrimmed || sTrimmed.indexOf("data: ") !== 0) {
-                                continue;
-                            }
-                            var sData = sTrimmed.slice(6);
-                            if (sData === "[DONE]") {
-                                oCallbacks.onDone();
-                                return;
-                            }
-
-                            try {
-                                var oParsed = JSON.parse(sData);
-                                var sDelta = oParsed.choices &&
-                                    oParsed.choices[0] &&
-                                    oParsed.choices[0].delta &&
-                                    oParsed.choices[0].delta.content;
-                                if (sDelta) {
-                                    oCallbacks.onToken(sDelta);
-                                }
-                            } catch (e) {
-                                // skip malformed JSON chunks
-                            }
-                        }
-
-                        return pump();
-                    });
-                }
-
-                return pump();
+                return res.json();
             })
-            .catch(function (err) {
-                if (err.name === "AbortError") {
-                    oCallbacks.onDone();
-                } else {
-                    oCallbacks.onError(err.message);
-                }
+            .then(function (oData) {
+                var sContent = oData.choices &&
+                    oData.choices[0] &&
+                    oData.choices[0].message &&
+                    oData.choices[0].message.content;
+                return sContent || "";
             });
         }
     };

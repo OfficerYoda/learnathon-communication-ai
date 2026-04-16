@@ -217,17 +217,19 @@
                                                         class="reflect-assistant-content"
                                                         sanitizeContent="false"/>
 
-                                                    <!-- Streaming indicator -->
-                                                    <HBox
-                                                        visible="{chat>isStreaming}"
-                                                        alignItems="Center"
-                                                        class="reflect-streaming">
-                                                        <BusyIndicator size="1rem" class="sapUiTinyMarginEnd"/>
-                                                        <Text text="{i18n>messageStreaming}" class="reflect-streaming-label"/>
-                                                    </HBox>
                                                 </layout:VerticalLayout>
                                             </CustomListItem>
                                         </List>
+
+                                        <!-- Loading indicator (shown while waiting for response) -->
+                                        <HBox
+                                            visible="{chat>/isLoading}"
+                                            alignItems="Center"
+                                            justifyContent="Center"
+                                            class="sapUiSmallMargin">
+                                            <BusyIndicator size="1rem" class="sapUiTinyMarginEnd"/>
+                                            <Text text="{i18n>messageStreaming}" class="reflect-streaming-label"/>
+                                        </HBox>
                                     </ScrollContainer>
                                 </content>
 

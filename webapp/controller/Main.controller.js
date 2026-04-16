@@ -21,7 +21,6 @@ sap.ui.define([
         _oAbortController: null,
         _sSystemPrompt: "",     // Shared system prompt content from _system.md
         _oChartObserver: null,  // MutationObserver for chart initialization
-        _iRenderTimer: null,    // Throttle timer for markdown rendering during streaming
 
         // ─── Lifecycle ────────────────────────────────────────
 
@@ -341,19 +340,11 @@ sap.ui.define([
                 id: this._generateId(),
                 role: "user",
                 content: sContent,
-                timestamp: new Date().toISOString(),
-                isStreaming: false
+                contentHtml: "",
+                timestamp: new Date().toISOString()
             };
 
-            var oAssistantMsg = {
-                id: this._generateId(),
-                role: "assistant",
-                content: "",
-                contentHtml: "<div></div>",
-                timestamp: new Date().toISOString(),
-                isStreaming: true
-            };
-
+            // Build API messages
             var aApiMessages = [
                 { role: "system", content: this._buildSystemMessage() }
             ];
@@ -367,7 +358,8 @@ sap.ui.define([
 
             aApiMessages.push({ role: "user", content: sContent });
 
-            var aNewMessages = aMessages.concat([oUserMsg, oAssistantMsg]);
+            // Add user message and show loading state
+            var aNewMessages = aMessages.concat([oUserMsg]);
             oChatModel.setProperty("/messages", aNewMessages);
             oChatModel.setProperty("/hasMessages", true);
             oChatModel.setProperty("/isLoading", true);
@@ -380,105 +372,68 @@ sap.ui.define([
 
             this._scrollToBottom();
 
-            // Ensure the chart observer is running (it may not have been
-            // started in onInit if the messagesScroll wasn't rendered yet)
+            // Ensure the chart observer is running
             this._startChartObserver();
 
             this._oAbortController = new AbortController();
 
-            Api.streamChat(
-                aApiMessages,
-                sModel,
-                {
-                    onToken: function (sToken) {
-                        var aCurrentMessages = oChatModel.getProperty("/messages");
-                        var iLast = aCurrentMessages.length - 1;
-                        if (iLast >= 0 && aCurrentMessages[iLast].role === "assistant") {
-                            var sPath = "/messages/" + iLast + "/content";
-                            var sCurrentContent = oChatModel.getProperty(sPath) || "";
-                            oChatModel.setProperty(sPath, sCurrentContent + sToken);
+            // Send non-streaming request
+            Api.sendChat(aApiMessages, sModel, this._oAbortController.signal)
+                .then(function (sResponse) {
+                    var sHtml = formatter.markdownToHtml(sResponse);
 
-                            // Throttle HTML rendering to every 1000ms
-                            if (!that._iRenderTimer) {
-                                that._iRenderTimer = setTimeout(function () {
-                                    that._iRenderTimer = null;
-                                    that._renderAssistantHtml(oChatModel, iLast);
-                                }, 1000);
-                            }
-                        }
-                        that._scrollToBottom();
-                    },
-                    onDone: function () {
-                        // Cancel any pending throttled render
-                        if (that._iRenderTimer) {
-                            clearTimeout(that._iRenderTimer);
-                            that._iRenderTimer = null;
-                        }
+                    var oAssistantMsg = {
+                        id: that._generateId(),
+                        role: "assistant",
+                        content: sResponse,
+                        contentHtml: '<div class="reflect-markdown-body">' + sHtml + '</div>',
+                        timestamp: new Date().toISOString()
+                    };
 
-                        var aCurrentMessages = oChatModel.getProperty("/messages");
-                        var iLast = aCurrentMessages.length - 1;
-                        if (iLast >= 0 && aCurrentMessages[iLast].role === "assistant") {
-                            oChatModel.setProperty("/messages/" + iLast + "/isStreaming", false);
-                            // Final render of complete content
-                            that._renderAssistantHtml(oChatModel, iLast);
+                    var aCurrent = oChatModel.getProperty("/messages");
+                    oChatModel.setProperty("/messages", aCurrent.concat([oAssistantMsg]));
+                    oChatModel.setProperty("/isLoading", false);
+                    that._oAbortController = null;
+                    that._scrollToBottom();
+
+                    // Initialize any charts in the response
+                    setTimeout(function () {
+                        var oScroll = that.byId("messagesScroll");
+                        if (oScroll && oScroll.getDomRef()) {
+                            chartRenderer.initCharts(oScroll.getDomRef());
                         }
+                    }, 150);
+                })
+                .catch(function (err) {
+                    if (err.name === "AbortError") {
                         oChatModel.setProperty("/isLoading", false);
                         that._oAbortController = null;
-                        that._scrollToBottom();
-
-                        // Final chart init pass after streaming completes
-                        setTimeout(function () {
-                            var oScroll = that.byId("messagesScroll");
-                            if (oScroll && oScroll.getDomRef()) {
-                                chartRenderer.initCharts(oScroll.getDomRef());
-                            }
-                        }, 100);
-                    },
-                    onError: function (sError) {
-                        if (that._iRenderTimer) {
-                            clearTimeout(that._iRenderTimer);
-                            that._iRenderTimer = null;
-                        }
-
-                        var aCurrentMessages = oChatModel.getProperty("/messages");
-                        var iLast = aCurrentMessages.length - 1;
-                        if (iLast >= 0 && aCurrentMessages[iLast].role === "assistant") {
-                            oChatModel.setProperty("/messages/" + iLast + "/content", "Error: " + sError);
-                            oChatModel.setProperty("/messages/" + iLast + "/isStreaming", false);
-                            that._renderAssistantHtml(oChatModel, iLast);
-                        }
-                        oChatModel.setProperty("/isLoading", false);
-                        that._oAbortController = null;
+                        return;
                     }
-                },
-                this._oAbortController.signal
-            );
+
+                    var oErrorMsg = {
+                        id: that._generateId(),
+                        role: "assistant",
+                        content: "Error: " + err.message,
+                        contentHtml: '<div class="reflect-markdown-body"><p>Error: ' +
+                            err.message.replace(/</g, "&lt;").replace(/>/g, "&gt;") + '</p></div>',
+                        timestamp: new Date().toISOString()
+                    };
+
+                    var aCurrent = oChatModel.getProperty("/messages");
+                    oChatModel.setProperty("/messages", aCurrent.concat([oErrorMsg]));
+                    oChatModel.setProperty("/isLoading", false);
+                    that._oAbortController = null;
+                });
         },
 
         _clearChat: function () {
             this.onStopStreaming();
-            if (this._iRenderTimer) {
-                clearTimeout(this._iRenderTimer);
-                this._iRenderTimer = null;
-            }
             var oChatModel = this.getView().getModel("chat");
             oChatModel.setProperty("/messages", []);
             oChatModel.setProperty("/hasMessages", false);
             oChatModel.setProperty("/isLoading", false);
             oChatModel.setProperty("/input", "");
-        },
-
-        /**
-         * Renders the markdown content of an assistant message to HTML
-         * and updates the contentHtml property in the model.
-         * @param {sap.ui.model.json.JSONModel} oChatModel
-         * @param {number} iIndex - Message index in /messages array
-         */
-        _renderAssistantHtml: function (oChatModel, iIndex) {
-            var sContent = oChatModel.getProperty("/messages/" + iIndex + "/content") || "";
-            var sHtml = formatter.markdownToHtml(sContent);
-            oChatModel.setProperty("/messages/" + iIndex + "/contentHtml",
-                '<div class="reflect-markdown-body">' + sHtml + '</div>');
         },
 
         _scrollToBottom: function () {
