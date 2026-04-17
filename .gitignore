@@ -3,3 +3,4 @@ dist/
 .ui5/
 *.log
 .DS_Store
+.env
