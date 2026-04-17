@@ -10,6 +10,6 @@
   },
   "devDependencies": {
     "@ui5/cli": "^4.0.0",
-    "ui5-middleware-simpleproxy": "^3.7.0"
+    "http-proxy": "^1.18.1"
   }
 }

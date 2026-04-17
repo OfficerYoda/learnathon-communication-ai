@@ -48,6 +48,22 @@ webapp/
 npm install
 ```
 
+### API Key Setup
+
+Copy the example env file and add your API key:
+
+```bash
+cp .env.example .env
+```
+
+Then edit `.env`:
+
+```
+API_KEY=your-actual-api-key
+```
+
+The key is injected server-side by a custom proxy middleware. It never reaches the browser.
+
 ### Development Server
 
 ```bash
@@ -68,21 +84,6 @@ Output is written to `dist/`.
 
 - **NVC Communication Analysis**: Paste a message and get a scored analysis across 8 dimensions (Clarity, Empathy, Tonality, etc.) with NVC-aligned alternatives
 - **Email Drafting & Overhaul**: Draft new emails or improve existing ones with configurable tone selection
-- **Streaming Responses**: Real-time token streaming via SSE from the LiteLLM proxy
 - **Ephemeral Sessions**: No data persistence; everything resets on page refresh
 - **Configurable Context**: Set relationship type and situation description to inform AI responses
 - **Model Selection**: Dynamically fetches available models from the LiteLLM proxy
-
-## API Key Configuration
-
-Pass the API key as a URL parameter:
-
-```
-http://localhost:8080/index.html?api-key=YOUR_KEY
-```
-
-Or set it globally before the app loads:
-
-```javascript
-window.__REFLECT_API_KEY = "your-key-here";
-```
