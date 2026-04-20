@@ -55,33 +55,29 @@
       "chat": {
         "type": "sap.ui.model.json.JSONModel",
         "settings": {
-          "data": {
-            "messages": [],
-            "isLoading": false,
-            "input": "",
-            "charCount": 0,
-            "hasMessages": false
-          }
+          "messages": [],
+          "isLoading": false,
+          "input": "",
+          "charCount": 0,
+          "hasMessages": false
         }
       },
       "config": {
         "type": "sap.ui.model.json.JSONModel",
         "settings": {
-          "data": {
-            "modes": [],
-            "models": [],
-            "modelsLoading": true,
-            "activeModeId": "",
-            "selectedModel": "",
-            "relationship": "",
-            "situation": "",
-            "selectedTones": [],
-            "selectedDimensions": ["Empathy", "Clarity", "I-Language", "NeedExpression", "ToneMatch"],
-            "emailImproveOnly": false,
-            "isEmailMode": false,
-            "activeMode": null,
-            "sidebarExpanded": true
-          }
+          "modes": [],
+          "models": [],
+          "modelsLoading": true,
+          "activeModeId": "",
+          "selectedModel": "",
+          "relationship": "",
+          "situation": "",
+          "selectedTones": [],
+          "selectedDimensions": ["Empathy", "Clarity", "I-Language", "NeedExpression", "ToneMatch"],
+          "emailImproveOnly": false,
+          "isEmailMode": false,
+          "activeMode": null,
+          "sidebarExpanded": true
         }
       }
     },
