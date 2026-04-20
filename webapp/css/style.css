@@ -412,3 +412,49 @@
 .reflect-gauge-legend-improved {
     background: var(--sapPositiveColor, #30914c);
 }
+
+/* ─── Collapsible Analysis Section ───────────────────────── */
+
+.reflect-analysis-details {
+    margin-top: 1rem;
+    border: 1px solid var(--sapContent_ForegroundBorderColor, #d9d9d9);
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.reflect-analysis-toggle {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--sapLinkColor, #0064d9);
+    background: var(--sapList_HeaderBackground, #f5f6f7);
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+}
+
+.reflect-analysis-toggle::-webkit-details-marker {
+    display: none;
+}
+
+.reflect-analysis-toggle::before {
+    content: "\25B6";
+    display: inline-block;
+    margin-right: 0.5rem;
+    font-size: 0.625rem;
+    transition: transform 0.15s ease;
+    vertical-align: middle;
+}
+
+.reflect-analysis-details[open] > .reflect-analysis-toggle::before {
+    transform: rotate(90deg);
+}
+
+.reflect-analysis-toggle:hover {
+    background: var(--sapList_Hover_Background, #eaecee);
+}
+
+.reflect-analysis-content {
+    padding: 0.75rem;
+}

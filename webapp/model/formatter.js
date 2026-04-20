@@ -39,6 +39,32 @@ sap.ui.define([
         });
     }
 
+    /**
+     * Scans rendered HTML for the <!-- analysis-start --> marker.
+     * If found, wraps everything after it in a <details>/<summary> element
+     * so the analysis section is collapsed by default.
+     * @param {string} sHtml - The rendered HTML string
+     * @returns {string} HTML with analysis section wrapped, or unchanged if no marker
+     */
+    function _wrapAnalysisSection(sHtml) {
+        var sMarker = "<!-- analysis-start -->";
+        var iIdx = sHtml.indexOf(sMarker);
+
+        if (iIdx === -1) {
+            return sHtml;
+        }
+
+        var sBefore = sHtml.substring(0, iIdx);
+        var sAfter = sHtml.substring(iIdx + sMarker.length);
+
+        return sBefore +
+            '<details class="reflect-analysis-details">' +
+            '<summary class="reflect-analysis-toggle">Show analysis</summary>' +
+            '<div class="reflect-analysis-content">' +
+            sAfter +
+            '</div></details>';
+    }
+
     return {
         /**
          * Formats a Date to HH:MM:SS (24-hour).
@@ -113,27 +139,35 @@ sap.ui.define([
         /**
          * Converts markdown text to HTML using marked.js with chart extensions.
          * Falls back to basic escaping if marked is not loaded.
+         * If the markdown contains an <!-- analysis-start --> marker, everything
+         * after it is wrapped in a collapsible <details>/<summary> element.
          * @param {string} sMarkdown - The markdown text
          * @returns {string} HTML string
          */
         markdownToHtml: function (sMarkdown) {
             if (!sMarkdown) return "";
 
+            var sHtml;
+
             if (window.marked) {
                 _initMarked();
                 try {
-                    return window.marked.parse(sMarkdown);
+                    sHtml = window.marked.parse(sMarkdown);
                 } catch (e) {
                     console.warn("[formatter] marked.parse error:", e);
                 }
             }
 
-            // Fallback: escape HTML and preserve line breaks
-            return sMarkdown
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/\n/g, "<br/>");
+            if (!sHtml) {
+                // Fallback: escape HTML and preserve line breaks
+                sHtml = sMarkdown
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/\n/g, "<br/>");
+            }
+
+            return _wrapAnalysisSection(sHtml);
         }
     };
 });

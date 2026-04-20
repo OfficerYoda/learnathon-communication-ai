@@ -408,11 +408,13 @@ sap.ui.define([
                     that._oAbortController = null;
                     that._scrollToBottom();
 
-                    // Initialize any charts in the response
+                    // Initialize any charts in the response and attach
+                    // toggle listeners for charts inside collapsed analysis sections
                     setTimeout(function () {
                         var oScroll = that.byId("messagesScroll");
                         if (oScroll && oScroll.getDomRef()) {
                             chartRenderer.initCharts(oScroll.getDomRef());
+                            that._attachAnalysisToggleListeners(oScroll.getDomRef());
                         }
                     }, 150);
                 })
@@ -462,6 +464,35 @@ sap.ui.define([
 
         _generateId: function () {
             return "msg-" + Date.now() + "-" + Math.random().toString(36).substr(2, 9);
+        },
+
+        /**
+         * Attaches a one-time toggle event listener on any <details> elements
+         * with class "reflect-analysis-details" that haven't been wired up yet.
+         * When the user expands the analysis section, Chart.js canvases inside
+         * it are initialized (they can't render while hidden).
+         * @param {HTMLElement} oDomRef - Container to scan for <details> elements
+         */
+        _attachAnalysisToggleListeners: function (oDomRef) {
+            if (!oDomRef) return;
+
+            var aDetails = oDomRef.querySelectorAll(".reflect-analysis-details");
+            for (var i = 0; i < aDetails.length; i++) {
+                var oDetails = aDetails[i];
+
+                // Skip already-wired elements
+                if (oDetails.getAttribute("data-reflect-toggle-bound")) continue;
+                oDetails.setAttribute("data-reflect-toggle-bound", "true");
+
+                oDetails.addEventListener("toggle", function () {
+                    if (this.open) {
+                        // Small delay to let the browser lay out the now-visible content
+                        setTimeout(function () {
+                            chartRenderer.initCharts(this);
+                        }.bind(this), 50);
+                    }
+                });
+            }
         }
     });
 });
