@@ -1,69 +1,208 @@
----
-title: Communication Analyzer - Final De-Escalation Edition
-description: AI-Powered NVC-Reflector. Sofortige Freigabe-Empfehlung, Scoring und 3 deeskalierende Text-Alternativen.
-icon: 🕊️
----
+============================================================
+COMMUNICATION ANALYZER — TEST SCENARIOS
+SAP Global Ombuds Office · AI Learnathon 2026
+============================================================
+Scoring Model: 0–30% → Low · 31–60% → Moderate · 61–100% → Strong
+------------------------------------------------------------
 
-# Communication Analyzer (De-Escalation Focus)
 
-Du bist ein AI-Kommunikationscoach für den Arbeitsplatz (GFK-basiert). Deine Aufgabe ist es, Nachrichten blitzschnell auf Konfliktpotenzial zu prüfen und deeskalierende Alternativen zu liefern.
+════════════════════════════════════════════════════════════
+🔴 LOW (0–30%) — Escalating / Accusatory / Demanding
+════════════════════════════════════════════════════════════
 
----
+SCENARIO 01 · DE · Late delivery / repeated failure
+--------------------------------------------------------------
+"Das ist jetzt das dritte Mal, dass du den Bericht zu spät abgibst.
+Ich weiß nicht, ob du das überhaupt ernst nimmst.
+Ich erwarte, dass das nicht noch mal passiert."
 
-## 🚦 Quick-Check: Abschicken?
-**Entscheidung: [STARKES JA / EHER JA / NEIN - BITTE ÜBERARBEITEN / STOPP]**
-*(Kurze Begründung in einem Satz, z.B.: "Die Nachricht enthält versteckte Vorwürfe, die den Konflikt verschärfen könnten.")*
+Expected: I-Messages: Low · Empathy: Low · Tone: Escalating · NVC: Low
+Context: Team lead to team member, recurring issue
 
----
 
-## 🌍 Szenario-Check
-Bestätige kurz (max. 2 Sätze): Wer schreibt wem und was ist das Ziel?
+SCENARIO 02 · EN · Communication breakdown / blame
+--------------------------------------------------------------
+"Why wasn't I informed about this decision?
+This is exactly the kind of communication failure that slows everything down.
+Please fix this immediately."
 
----
+Expected: I-Messages: Low · Empathy: Low · Tone: Cold/Demanding · NVC: Low
+Context: Peer to peer, cross-functional team
 
-## 📊 Scoring Dashboard
 
-| Dimension | Score | Kurz-Assessment |
-|-----------|-------|-----------------|
-| 🗣️ Ich vs. Du | % | |
-| 💭 Emotion/Bedürfnis | % | |
-| 💚 Empathie & Ton | % | |
-| 🎯 Klarheit | % | |
-| 🕊️ GFK-Struktur | % | |
+SCENARIO 03 · DE · Meeting frustration / passive attack
+--------------------------------------------------------------
+"Ich frag mich ehrlich gesagt, ob du dir überhaupt Gedanken machst,
+bevor du in Meetings redest. Das kostet uns alle Zeit."
 
-### 🏆 Gesamt-Ranking: [XX%] 
-**Level: [Low / Moderate / Strong]**
-*(Ein Satz zur Gesamtwirkung der Nachricht auf das Arbeitsklima.)*
+Expected: I-Messages: Low · Empathy: Low · Tone: Aggressive · NVC: Low
+Context: Colleague to colleague, open office culture
 
----
 
-## 🕊️ Deeskalierende Text-Optionen
-Erstelle drei Varianten, die **höflich, deeskalierend und lösungsorientiert** sind. Sie sollen den Druck aus der Situation nehmen, ohne die eigene Position aufzugeben.
+SCENARIO 04 · EN · Passive-aggressive classic
+--------------------------------------------------------------
+"Per my last email…"
 
-> ### 1️⃣ Vorschlag: Sanft & Verbindend
-> *Fokus: Emotionale Glättung und Wertschätzung des Gegenübers.*
-> 
-> **✉️ Nachricht:**
-> [Hier den Text einfügen]
+Expected: Minimal input — test model handling of very short / implicit messages
+Context: Email follow-up, hierarchically neutral
 
-> ### 2️⃣ Vorschlag: Sachlich & Deeskalierend
-> *Fokus: Faktenbasierte Klärung ohne Vorwürfe, neutraler Ton.*
-> 
-> **✉️ Nachricht:**
-> [Hier den Text einfügen]
 
-> ### 3️⃣ Vorschlag: Kurz & Zukunftsorientiert
-> *Fokus: Direkt auf eine Lösung zusteuern, um das Thema abzuschließen.*
-> 
-> **✉️ Nachricht:**
-> [Hier den Text einfügen]
+SCENARIO 05 · DE · Threat disguised as request
+--------------------------------------------------------------
+"Wenn das Projekt bis Freitag nicht steht, werde ich das
+an die Abteilungsleitung eskalieren müssen.
+Ich hoffe das ist dir bewusst."
 
----
+Expected: Request vs. Demand: Low · Empathy: Low · Tone: Cold/Threatening
+Context: Project manager to contributor
 
-## Core Principles
-1. **Ampel-System:** Der Quick-Check oben muss dem Nutzer sofort sagen, ob er pausieren sollte.
-2. **Höflichkeit:** Nutze Formulierungen, die Respekt zeigen, auch bei Differenzen.
-3. **Optik:** Nutze die Blockquotes (`>`) und Emojis, damit die Vorschläge deutlich vom Rest getrennt sind.
-4. **Authentizität:** Die Texte müssen professionell und menschlich klingen, nicht wie ein KI-Skript.
 
-*Independent · Neutral · Confidential · Informal*
+════════════════════════════════════════════════════════════
+🟡 MODERATE (31–60%) — Mixed / Unclear / Well-Intentioned but Blurry
+════════════════════════════════════════════════════════════
+
+SCENARIO 06 · DE · Unheard in meeting / vague request
+--------------------------------------------------------------
+"Ich hab das Gefühl, dass meine Inputs in dem Meeting heute
+nicht wirklich gehört wurden.
+Wäre schön, wenn wir das nächste Mal anders machen könnten."
+
+Expected: Empathy: Moderate · Clarity: Low · NVC: Partial · Tone: Neutral
+Context: Employee to team, post-meeting reflection
+
+
+SCENARIO 07 · EN · Misalignment / soft follow-up
+--------------------------------------------------------------
+"I wanted to follow up on yesterday's discussion.
+I'm not sure we're aligned on the priorities —
+can we maybe sync up this week?"
+
+Expected: Clarity: Moderate · Empathy: Moderate · Demand vs. Request: Strong
+Context: Peer to peer, project alignment
+
+
+SCENARIO 08 · DE · Empathy attempt + hidden accusation
+--------------------------------------------------------------
+"Ich glaube du meinst es nicht so, aber dein Ton in Meetings
+wirkt manchmal sehr abweisend auf mich und andere im Team,
+glaube ich zumindest."
+
+Expected: I-Messages: Moderate · Empathy: Moderate · Clarity: Low · hidden judgment
+Context: Colleague feedback, trust relationship exists
+
+
+SCENARIO 09 · EN · Frustration with workaround attempt
+--------------------------------------------------------------
+"I totally understand you're busy, but this has been sitting
+in your inbox for two weeks and it's starting to block my work.
+I just need five minutes of your time."
+
+Expected: Empathy: Moderate · Clarity: Strong · Tone: Mild pressure
+Context: Employee to senior colleague, dependency situation
+
+
+SCENARIO 10 · DE · Overloaded / indirect need
+--------------------------------------------------------------
+"Ich fühle mich gerade ein bisschen overwhelmed mit allem
+und ich glaub ich brauch irgendwie mehr Unterstützung,
+aber ich weiß auch nicht genau wie."
+
+Expected: Emotional Expression: Strong · Clarity: Low · Request: Low
+Context: Employee to manager, stress situation — test for vague need
+
+
+════════════════════════════════════════════════════════════
+🟢 STRONG (61–100%) — Clear / Empathetic / NVC-Aligned
+════════════════════════════════════════════════════════════
+
+SCENARIO 11 · DE · Misaligned expectations / structured request
+--------------------------------------------------------------
+"Als ich gemerkt habe, dass wir in dem Projekt unterschiedliche
+Erwartungen haben, war ich erstmal frustriert.
+Mir ist es wichtig, dass wir effizient zusammenarbeiten.
+Könntest du kurz erklären, wie du dir die Aufgabenverteilung vorstellst?"
+
+Expected: NVC: Strong · I-Messages: Strong · Empathy: Strong · Clarity: Strong
+Context: Peer to peer, collaborative project
+
+
+SCENARIO 12 · EN · Delayed response / accountability
+--------------------------------------------------------------
+"I noticed I didn't respond to your message for two days —
+I imagine that might have felt like I was ignoring it.
+I was overwhelmed, but that's not an excuse.
+Can we schedule 20 minutes to align?"
+
+Expected: All dimensions: Strong · model example for NVC in practice
+Context: Colleague to colleague, remote team
+
+
+SCENARIO 13 · DE · Feedback request / vulnerability
+--------------------------------------------------------------
+"Ich hatte das Gefühl, dass mein Beitrag in der letzten Präsentation
+nicht so ankam, wie ich es mir erhofft hatte.
+Ich würde gerne verstehen, was ich beim nächsten Mal anders machen könnte —
+hast du fünf Minuten für ein kurzes Feedback-Gespräch?"
+
+Expected: NVC: Strong · Emotional Expression: Strong · Request: Clear & open
+Context: Junior employee to senior, development conversation
+
+
+SCENARIO 14 · EN · Conflict de-escalation after argument
+--------------------------------------------------------------
+"I've been thinking about our conversation yesterday.
+I said some things in the heat of the moment that I don't stand behind.
+What I actually wanted to express is that I feel pressure
+when deadlines shift without notice — because I need predictability to plan well.
+Would you be open to talking about how we can handle this differently going forward?"
+
+Expected: All dimensions: Strong · gold standard scenario
+Context: Peer to peer, post-conflict repair
+
+
+════════════════════════════════════════════════════════════
+⚠️ EDGE CASES — Boundary & Stress Tests
+════════════════════════════════════════════════════════════
+
+SCENARIO 15 · EN · Too short to analyze
+--------------------------------------------------------------
+"Kein Problem!"
+
+Expected: Model should ask for more context rather than force an analysis
+Context: —
+
+
+SCENARIO 16 · DE · Dialogue input (both sides)
+--------------------------------------------------------------
+Person A: "Warum hast du das nicht mit mir abgestimmt bevor du das an den Kunden geschickt hast?"
+Person B: "Ich dachte das wäre so in Ordnung, sorry."
+Person A: "Das ist nicht okay. Das macht mich unglaubwürdig nach außen."
+
+Expected: Model analyzes both sides, focuses recommendations on Person A
+Context: Manager (A) to team member (B), client-facing mistake
+
+
+SCENARIO 17 · EN · High emotional charge / potential crisis
+--------------------------------------------------------------
+"I don't think I can keep working like this.
+I feel completely invisible in this team and
+I'm honestly not sure it's worth it anymore."
+
+Expected: Model handles with extra care — emotional safety first, then gentle analysis
+Context: Employee to trusted colleague or manager
+
+
+SCENARIO 18 · DE · Sarkasmus / Ironie
+--------------------------------------------------------------
+"Super, wieder ein Meeting das auch eine E-Mail hätte sein können.
+Aber hey, wenigstens waren alle dabei."
+
+Expected: Tone: Low · I-Messages: Low · test for irony/sarcasm detection
+Context: Team chat, informal
+
+
+============================================================
+END OF TEST SCENARIOS — 18 total
+SAP Global Ombuds Office · Communication Analyzer Prototype
+AI Learnathon 2026 · INTERNAL – SAP and Partners Only
+============================================================

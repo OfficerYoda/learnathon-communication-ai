@@ -55,7 +55,7 @@ sap.ui.define([], function () {
     // Registry of known prompt files (mode prompts only, not _system.md)
     // Order here determines display order in the sidebar
     var PROMPT_FILES = [
-        "nvc-communication",
+        "SystemPrompt",
         "email-drafting"
     ];
 
