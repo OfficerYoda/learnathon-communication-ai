@@ -1,6 +1,7 @@
 node_modules/
 dist/
 .ui5/
+.opencode/
 *.log
 .DS_Store
 .env
