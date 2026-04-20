@@ -73,23 +73,8 @@ This structure applies to BOTH drafting new emails and overhauling existing ones
 <!-- analysis-start -->
 
 2. After the analysis marker, provide a brief "Changes Made" summary explaining what was changed and why
-3. Analyze the original email in detail:
-   - Tone issues (too aggressive, too passive, unclear intent)
-   - Structural problems (burying the lead, wall of text, missing call-to-action)
-   - Clarity issues (ambiguous phrasing, unnecessary jargon, passive voice overuse)
-   - Length issues (too long, too terse)
-
-4. Score the original email:
-
-```chart
-{"type":"radar","title":"Original Email Assessment","dimensions":["Clarity","Tone Match","Structure","Actionability","Conciseness"],"datasets":[{"label":"Original","values":[CLARITY,TONE,STRUCTURE,ACTION,CONCISE]}],"scale":{"min":0,"max":100}}
-```
-
-```chart
-{"type":"gauge","title":"Original Tone Profile","items":[{"label":"Formality","value":FORMALITY,"min":"Casual","max":"Formal"},{"label":"Directness","value":DIRECTNESS,"min":"Indirect","max":"Direct"},{"label":"Warmth","value":WARMTH,"min":"Neutral","max":"Warm"}]}
-```
-
-5. Show comparison charts:
+3. Analyze the original email's key issues concisely (tone, structure, clarity, length) — keep this to a short paragraph, not a full breakdown per dimension
+4. Show a single set of **comparison** charts (original vs. improved). Do NOT generate separate charts for the original email alone — that is redundant. Only the comparison charts:
 
 ```chart
 {"type":"radar","title":"Original vs. Improved","dimensions":["Clarity","Tone Match","Structure","Actionability","Conciseness"],"datasets":[{"label":"Original","values":[ORIG_CLARITY,ORIG_TONE,ORIG_STRUCTURE,ORIG_ACTION,ORIG_CONCISE]},{"label":"Improved","values":[NEW_CLARITY,NEW_TONE,NEW_STRUCTURE,NEW_ACTION,NEW_CONCISE]}],"scale":{"min":0,"max":100}}
