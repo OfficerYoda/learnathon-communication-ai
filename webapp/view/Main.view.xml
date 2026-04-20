@@ -100,6 +100,13 @@
                                                 <core:Item key="Thoughtful" text="Thoughtful"/>
                                             </MultiComboBox>
 
+                                            <CheckBox
+                                                id="analyzeCheckbox"
+                                                text="{i18n>sidebarAnalyzeLabel}"
+                                                selected="{config>/emailAnalyzeMode}"
+                                                visible="{config>/isEmailMode}"
+                                                class="sapUiTinyMarginBottom"/>
+
                                             <Label text="{i18n>sidebarModelLabel}" labelFor="modelSelect"/>
                                             <Select
                                                 id="modelSelect"
