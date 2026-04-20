@@ -194,7 +194,7 @@
                                             <CustomListItem
                                                 type="Inactive"
                                                 class="{= ${chat>role} === 'user' ? 'reflect-msg-user' : 'reflect-msg-assistant'}">
-                                                <layout:VerticalLayout width="100%" class="sapUiSmallMargin">
+                                                <layout:VerticalLayout width="100%" class="reflect-msg-content">
                                                     <HBox justifyContent="SpaceBetween" class="sapUiTinyMarginBottom">
                                                         <Text
                                                             text="{

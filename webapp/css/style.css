@@ -42,6 +42,11 @@
 
 /* ─── Message Styling ────────────────────────────────────── */
 
+.reflect-msg-content {
+    padding: 0.5rem 0.75rem;
+    box-sizing: border-box;
+}
+
 .reflect-msg-user {
     background-color: var(--sapList_SelectionBackgroundColor, #e8f0fe);
     border-radius: 0.5rem;
@@ -67,7 +72,6 @@
     font-family: "72Mono", monospace;
     flex-shrink: 0;
     white-space: nowrap;
-    padding-right: 1.5rem;
 }
 
 .reflect-user-text {
@@ -133,6 +137,9 @@
 .reflect-markdown-body {
     line-height: 1.6;
     font-size: 0.875rem;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    min-width: 0;
 }
 
 .reflect-markdown-body strong {
@@ -147,11 +154,13 @@
 
 .reflect-assistant-content {
     width: 100%;
+    overflow: hidden;
 }
 
 /* Override UI5's HTML control default styling */
 .reflect-assistant-content > div {
     width: 100%;
+    min-width: 0;
 }
 
 /* ─── Marked.js standard HTML elements ───────────────────── */
