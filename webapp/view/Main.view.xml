@@ -104,7 +104,7 @@
                                                 id="improveOnlyCheckbox"
                                                 text="{i18n>sidebarImproveOnlyLabel}"
                                                 selected="{config>/emailImproveOnly}"
-                                                visible="{config>/isEmailMode}"
+                                                enabled="{config>/isEmailMode}"
                                                 class="sapUiTinyMarginBottom"/>
 
                                             <Label text="{i18n>sidebarModelLabel}" labelFor="modelSelect"/>
