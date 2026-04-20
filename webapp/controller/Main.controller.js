@@ -325,7 +325,7 @@ sap.ui.define([
                     ". Ensure the drafted or overhauled email reflects these tonal qualities.";
             }
 
-            if (bIsEmailMode && !oConfigModel.getProperty("/emailAnalyzeMode")) {
+            if (bIsEmailMode && oConfigModel.getProperty("/emailImproveOnly")) {
                 sPrompt += "\n\n## Output Mode — Improve Only\n" +
                     "Do NOT analyze the email. Do NOT produce any scoring, charts, radar charts, gauge bars, commentary, or explanations. " +
                     "Return ONLY the improved email text — nothing before it, nothing after it.";

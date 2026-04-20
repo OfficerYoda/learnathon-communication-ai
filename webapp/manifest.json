@@ -76,7 +76,7 @@
             "relationship": "",
             "situation": "",
             "selectedTones": [],
-            "emailAnalyzeMode": true,
+            "emailImproveOnly": false,
             "isEmailMode": false,
             "activeMode": null,
             "sidebarExpanded": true

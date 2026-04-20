@@ -101,9 +101,9 @@
                                             </MultiComboBox>
 
                                             <CheckBox
-                                                id="analyzeCheckbox"
-                                                text="{i18n>sidebarAnalyzeLabel}"
-                                                selected="{config>/emailAnalyzeMode}"
+                                                id="improveOnlyCheckbox"
+                                                text="{i18n>sidebarImproveOnlyLabel}"
+                                                selected="{config>/emailImproveOnly}"
                                                 visible="{config>/isEmailMode}"
                                                 class="sapUiTinyMarginBottom"/>
 
