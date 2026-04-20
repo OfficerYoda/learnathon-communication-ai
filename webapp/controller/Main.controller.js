@@ -13,6 +13,20 @@ sap.ui.define([
     var EMAIL_MODE_ID = "email-drafting";
     var DEFAULT_MODEL = "anthropic--claude-4-sonnet";
 
+    // Maps dimension keys (used in MultiComboBox) to display labels (used in prompts/charts)
+    var DIMENSION_LABELS = {
+        "Empathy": "Empathy",
+        "Clarity": "Clarity",
+        "I-Language": "I-Language",
+        "NeedExpression": "Need Expression",
+        "ToneMatch": "Tone Match",
+        "Structure": "Structure",
+        "Actionability": "Actionability",
+        "Conciseness": "Conciseness",
+        "Assertiveness": "Assertiveness",
+        "Boundaries": "Boundaries"
+    };
+
     return Controller.extend("com.reflect.app.controller.Main", {
 
         formatter: formatter,
@@ -235,6 +249,12 @@ sap.ui.define([
             this.getView().getModel("config").setProperty("/selectedTones", aSelectedKeys);
         },
 
+        onDimensionSelectionChange: function (oEvent) {
+            var oMultiCombo = oEvent.getSource();
+            var aSelectedKeys = oMultiCombo.getSelectedKeys();
+            this.getView().getModel("config").setProperty("/selectedDimensions", aSelectedKeys);
+        },
+
         onToggleSidebar: function () {
             var oToolPage = this.byId("mainToolPage");
             oToolPage.setSideExpanded(!oToolPage.getSideExpanded());
@@ -301,6 +321,7 @@ sap.ui.define([
             var sRelationship = (oConfigModel.getProperty("/relationship") || "").trim();
             var sSituation = (oConfigModel.getProperty("/situation") || "").trim();
             var aSelectedTones = oConfigModel.getProperty("/selectedTones") || [];
+            var aSelectedDimensions = oConfigModel.getProperty("/selectedDimensions") || [];
             var bIsEmailMode = oConfigModel.getProperty("/isEmailMode");
 
             // Start with the shared system prompt (chart tool docs)
@@ -309,6 +330,18 @@ sap.ui.define([
             // Append the mode-specific prompt
             if (oMode && oMode.content) {
                 sPrompt += "\n\n" + oMode.content;
+            }
+
+            // Inject selected analysis dimensions (applies to all modes)
+            if (aSelectedDimensions.length > 0) {
+                var aDimensionNames = [];
+                for (var i = 0; i < aSelectedDimensions.length; i++) {
+                    aDimensionNames.push(DIMENSION_LABELS[aSelectedDimensions[i]] || aSelectedDimensions[i]);
+                }
+                sPrompt += "\n\n## Current Context \u2014 Analysis Dimensions\n" +
+                    "Use ONLY the following dimensions for all scoring, analysis tables, and radar charts: " +
+                    aDimensionNames.join(", ") + ".\n" +
+                    "Each dimension is scored 0\u2013100. Do NOT add, remove, or rename any dimensions \u2014 use exactly these in the order listed.";
             }
 
             if (sRelationship) {

@@ -23,13 +23,12 @@ Briefly confirm (max. 2 sentences): Who is writing to whom and what is the goal?
 
 ## 📊 Scoring Dashboard
 
+Score the message on each of the **Analysis Dimensions** provided in the context. Present as a table:
+
 | Dimension | Score | Brief Assessment |
 |-----------|-------|-----------------|
-| 🗣️ I vs. You | % | |
-| 💭 Emotion/Need | % | |
-| 💚 Empathy & Tone | % | |
-| 🎯 Clarity | % | |
-| 🕊️ NVC-Structure | % | |
+
+*(One row per dimension from the Analysis Dimensions context. Each scored 0–100%.)*
 
 ### 🏆 Overall Ranking: [XX%] 
 **Level: [Low / Moderate / Strong]**

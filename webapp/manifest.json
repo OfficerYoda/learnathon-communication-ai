@@ -76,6 +76,7 @@
             "relationship": "",
             "situation": "",
             "selectedTones": [],
+            "selectedDimensions": ["Empathy", "Clarity", "I-Language", "NeedExpression", "ToneMatch"],
             "emailImproveOnly": false,
             "isEmailMode": false,
             "activeMode": null,

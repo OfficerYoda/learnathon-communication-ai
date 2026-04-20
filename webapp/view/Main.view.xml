@@ -80,6 +80,25 @@
                                                 growing="true"
                                                 class="sapUiTinyMarginBottom"/>
 
+                                            <Label text="{i18n>sidebarDimensionsLabel}" labelFor="dimensionsSelect"/>
+                                            <MultiComboBox
+                                                id="dimensionsSelect"
+                                                selectedKeys="{config>/selectedDimensions}"
+                                                width="100%"
+                                                selectionChange="onDimensionSelectionChange"
+                                                class="sapUiTinyMarginBottom">
+                                                <core:Item key="Empathy" text="Empathy"/>
+                                                <core:Item key="Clarity" text="Clarity"/>
+                                                <core:Item key="I-Language" text="I-Language"/>
+                                                <core:Item key="NeedExpression" text="Need Expression"/>
+                                                <core:Item key="ToneMatch" text="Tone Match"/>
+                                                <core:Item key="Structure" text="Structure"/>
+                                                <core:Item key="Actionability" text="Actionability"/>
+                                                <core:Item key="Conciseness" text="Conciseness"/>
+                                                <core:Item key="Assertiveness" text="Assertiveness"/>
+                                                <core:Item key="Boundaries" text="Boundaries"/>
+                                            </MultiComboBox>
+
                                             <Label text="{i18n>sidebarToneLabel}" labelFor="toneSelect"/>
                                             <MultiComboBox
                                                 id="toneSelect"
