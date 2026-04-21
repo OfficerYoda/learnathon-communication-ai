@@ -62,7 +62,7 @@ This structure applies to BOTH drafting new emails and overhauling existing ones
 ```chart
 {"type":"gauge","title":"Tone Profile","items":[{"label":"Formality","value":FORMALITY,"min":"Casual","max":"Formal"},{"label":"Directness","value":DIRECTNESS,"min":"Indirect","max":"Direct"},{"label":"Warmth","value":WARMTH,"min":"Neutral","max":"Warm"}]}
 ```
-5. Apply the **Four Steps of Nonviolent Communication (NVC)** according to Marshall B. Rosenberg:
+5. Apply the **Four Steps of Nonviolent Communication (NVC)** according to Marshall B. Rosenberg and Analyze the email with the principles:
    - **Observation**: Describe the situation precisely/specifically. Avoid judgments, interpretations, and generalizations.
    - **Feelings**: Identify real feelings. Avoid blaming the partner.
    - **Needs**: Figure out unmet needs. Distinguish between needs and positions.
