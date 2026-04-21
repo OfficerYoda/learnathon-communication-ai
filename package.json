@@ -16,10 +16,11 @@
     "deploy-config": "fiori add deploy-config"
   },
   "devDependencies": {
-    "reflect-api-proxy": "file:lib",
-    "http-proxy": "^1.18.1",
-    "@ui5/cli": "^4.0.0",
     "@sap/ux-ui5-tooling": "1",
+    "@ui5/cli": "^4.0.0",
+    "express": "^5.2.1",
+    "http-proxy": "^1.18.1",
+    "reflect-api-proxy": "file:lib",
     "rimraf": "6.0.1"
   },
   "sapuxLayer": "CUSTOMER_BASE",
@@ -28,5 +29,6 @@
     "openui5",
     "sapui5"
   ],
+  "type": "module",
   "main": "webapp/index.html"
 }

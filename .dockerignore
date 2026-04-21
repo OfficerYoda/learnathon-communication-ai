@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.env
+.DS_Store
+*.log
+.ui5/
+.opencode/
+mta_archives/
+mta-*/
+resources/
+archive.zip
