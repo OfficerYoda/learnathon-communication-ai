@@ -1,0 +1,6 @@
+{
+  "name": "reflect-api-proxy",
+  "version": "0.0.1",
+  "description": "UI5 custom middleware to proxy /api calls to LiteLLM backend",
+  "type": "module"
+}

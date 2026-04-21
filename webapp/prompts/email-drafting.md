@@ -62,6 +62,22 @@ This structure applies to BOTH drafting new emails and overhauling existing ones
 ```chart
 {"type":"gauge","title":"Tone Profile","items":[{"label":"Formality","value":FORMALITY,"min":"Casual","max":"Formal"},{"label":"Directness","value":DIRECTNESS,"min":"Indirect","max":"Direct"},{"label":"Warmth","value":WARMTH,"min":"Neutral","max":"Warm"}]}
 ```
+5. Apply the **Four Steps of Nonviolent Communication (NVC)** according to Marshall B. Rosenberg:
+   - **Observation**: Describe the situation precisely/specifically. Avoid judgments, interpretations, and generalizations.
+   - **Feelings**: Identify real feelings. Avoid blaming the partner.
+   - **Needs**: Figure out unmet needs. Distinguish between needs and positions.
+   - **Request**: Choose a request instead of a demand. Keep in mind that the partner could oppose.
+
+6. **NVC Analysis Breakdown**:
+   Provide this in a collapsible section to explain how the 4 steps were implemented:
+   <details>
+   <summary><b>Nonviolent Communication (NVC) Analysis</b></summary>
+   
+   - **Observation**: [Explain the specific, judgment-free facts used]
+   - **Feelings**: [Identify the specific emotions addressed/expressed]
+   - **Needs**: [Define the underlying unmet needs, not just positions]
+   - **Request**: [Explain why this is a request and not a demand]
+   </details>
 
 ### When OVERHAULING an existing email:
 1. Present the improved version immediately — this is the ONLY thing before the analysis marker. No commentary, no "Changes Made" summary, no explanations — just the email.
@@ -79,6 +95,23 @@ This structure applies to BOTH drafting new emails and overhauling existing ones
 ```chart
 {"type":"gauge","title":"Tone Comparison","items":[{"label":"Formality","value":ORIG_FORMALITY,"improved":NEW_FORMALITY,"min":"Casual","max":"Formal"},{"label":"Directness","value":ORIG_DIRECTNESS,"improved":NEW_DIRECTNESS,"min":"Indirect","max":"Direct"},{"label":"Warmth","value":ORIG_WARMTH,"improved":NEW_WARMTH,"min":"Neutral","max":"Warm"}]}
 ```
+
+5. Apply the **Four Steps of Nonviolent Communication (NVC)** according to Marshall B. Rosenberg:
+   - **Observation**: Describe the situation precisely/specifically. Avoid judgments, interpretations, and generalizations.
+   - **Feelings**: Identify real feelings. Avoid blaming the partner.
+   - **Needs**: Figure out unmet needs. Distinguish between needs and positions.
+   - **Request**: Choose a request instead of a demand. Keep in mind that the partner could oppose.
+
+6. **NVC Analysis Breakdown**:
+   Provide this in a collapsible section to explain how the 4 steps were implemented:
+   <details>
+   <summary><b>Nonviolent Communication (NVC) Analysis</b></summary>
+   
+   - **Observation**: [Explain the specific, judgment-free facts used]
+   - **Feelings**: [Identify the specific emotions addressed/expressed]
+   - **Needs**: [Define the underlying unmet needs, not just positions]
+   - **Request**: [Explain why this is a request and not a demand]
+   </details>
 
 ## Context Integration
 

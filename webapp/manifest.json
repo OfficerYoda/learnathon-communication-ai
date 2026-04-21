@@ -1,91 +1,105 @@
 {
-  "_version": "1.65.0",
-  "sap.app": {
-    "id": "com.reflect.app",
-    "type": "application",
-    "i18n": {
-      "bundleUrl": "i18n/i18n.properties",
-      "supportedLocales": ["en", ""],
-      "fallbackLocale": ""
+    "_version": "1.65.0",
+    "sap.app": {
+        "id": "com.reflect.app",
+        "type": "application",
+        "i18n": {
+            "bundleUrl": "i18n/i18n.properties",
+            "supportedLocales": [
+                "en",
+                ""
+            ],
+            "fallbackLocale": ""
+        },
+        "title": "{{appTitle}}",
+        "description": "{{appDescription}}",
+        "applicationVersion": {
+            "version": "1.0.0"
+        },
+        "sourceTemplate": {
+            "id": "@sap/ux-app-migrator:freestyle",
+            "version": "1.22.0",
+            "toolsId": "884e1a04-4f08-461e-9b4d-93cfa004f21b"
+        }
     },
-    "title": "{{appTitle}}",
-    "description": "{{appDescription}}",
-    "applicationVersion": {
-      "version": "1.0.0"
+    "sap.ui": {
+        "technology": "UI5",
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": true
+        }
+    },
+    "sap.ui5": {
+        "dependencies": {
+            "minUI5Version": "1.132.0",
+            "libs": {
+                "sap.m": {},
+                "sap.ui.core": {},
+                "sap.ui.layout": {},
+                "sap.f": {},
+                "sap.tnt": {},
+                "sap.ui.unified": {}
+            }
+        },
+        "resources": {
+            "css": [
+                {
+                    "uri": "css/style.css"
+                }
+            ]
+        },
+        "contentDensities": {
+            "compact": true,
+            "cozy": true
+        },
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
+                    "bundleName": "com.reflect.app.i18n.i18n"
+                }
+            },
+            "chat": {
+                "type": "sap.ui.model.json.JSONModel",
+                "settings": {
+                    "messages": [],
+                    "isLoading": false,
+                    "input": "",
+                    "charCount": 0,
+                    "hasMessages": false
+                }
+            },
+            "config": {
+                "type": "sap.ui.model.json.JSONModel",
+                "settings": {
+                    "modes": [],
+                    "models": [],
+                    "modelsLoading": true,
+                    "activeModeId": "",
+                    "selectedModel": "",
+                    "relationship": "",
+                    "situation": "",
+                    "selectedTones": [],
+                    "selectedDimensions": [
+                        "Empathy",
+                        "Clarity",
+                        "I-Language",
+                        "NeedExpression",
+                        "ToneMatch"
+                    ],
+                    "emailImproveOnly": false,
+                    "isEmailMode": false,
+                    "activeMode": null,
+                    "sidebarExpanded": true
+                }
+            }
+        },
+        "rootView": {
+            "viewName": "com.reflect.app.view.Main",
+            "type": "XML",
+            "id": "mainView",
+            "async": true
+        }
     }
-  },
-  "sap.ui": {
-    "technology": "UI5",
-    "deviceTypes": {
-      "desktop": true,
-      "tablet": true,
-      "phone": true
-    }
-  },
-  "sap.ui5": {
-    "dependencies": {
-      "minUI5Version": "1.132.0",
-      "libs": {
-        "sap.m": {},
-        "sap.ui.core": {},
-        "sap.ui.layout": {},
-        "sap.f": {},
-        "sap.tnt": {},
-        "sap.ui.unified": {}
-      }
-    },
-    "resources": {
-      "css": [
-        {
-          "uri": "css/style.css"
-        }
-      ]
-    },
-    "contentDensities": {
-      "compact": true,
-      "cozy": true
-    },
-    "models": {
-      "i18n": {
-        "type": "sap.ui.model.resource.ResourceModel",
-        "settings": {
-          "bundleName": "com.reflect.app.i18n.i18n"
-        }
-      },
-      "chat": {
-        "type": "sap.ui.model.json.JSONModel",
-        "settings": {
-          "messages": [],
-          "isLoading": false,
-          "input": "",
-          "charCount": 0,
-          "hasMessages": false
-        }
-      },
-      "config": {
-        "type": "sap.ui.model.json.JSONModel",
-        "settings": {
-          "modes": [],
-          "models": [],
-          "modelsLoading": true,
-          "activeModeId": "",
-          "selectedModel": "",
-          "relationship": "",
-          "situation": "",
-          "selectedTones": [],
-          "selectedDimensions": ["Empathy", "Clarity", "I-Language", "NeedExpression", "ToneMatch"],
-          "emailImproveOnly": false,
-          "isEmailMode": false,
-          "activeMode": null,
-          "sidebarExpanded": true
-        }
-      }
-    },
-    "rootView": {
-      "viewName": "com.reflect.app.view.Main",
-      "type": "XML",
-      "id": "mainView",
-      "async": true
-    }
-  }
 }

@@ -1,0 +1,7 @@
+specVersion: "3.0"
+metadata:
+  name: reflect-api-proxy
+kind: extension
+type: server-middleware
+middleware:
+  path: proxy-middleware.js

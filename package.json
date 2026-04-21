@@ -1,15 +1,32 @@
 {
-  "name": "reflect",
+  "name": "com.reflect.app",
   "private": true,
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Reflect - AI-powered communication self-reflection tool (SAPUI5)",
   "scripts": {
-    "start": "ui5 serve -o index.html",
-    "build": "ui5 build --clean-dest --dest dist",
-    "lint": "ui5lint"
+    "lint": "ui5lint",
+    "start_old": "ui5 serve -o index.html",
+    "build_old": "ui5 build --clean-dest --dest dist",
+    "start": "fiori run --open \"test/flpSandbox.html?sap-ui-xx-viewCache=false#app-tile\"",
+    "start-local": "fiori run --config ./ui5-local.yaml --open \"test/flpSandbox.html?sap-ui-xx-viewCache=false#app-tile\"",
+    "start-noflp": "fiori run --open \"index.html?sap-ui-xx-viewCache=false\"",
+    "start-variants-management": "fiori run --open \"preview.html?sap-ui-xx-viewCache=false&fiori-tools-rta-mode=true&sap-ui-rta-skip-flex-validation=true#preview-app\"",
+    "build": "ui5 build -a --clean-dest --include-task=generateCachebusterInfo",
+    "deploy": "fiori verify",
+    "deploy-config": "fiori add deploy-config"
   },
   "devDependencies": {
+    "reflect-api-proxy": "file:lib",
+    "http-proxy": "^1.18.1",
     "@ui5/cli": "^4.0.0",
-    "http-proxy": "^1.18.1"
-  }
+    "@sap/ux-ui5-tooling": "1",
+    "rimraf": "6.0.1"
+  },
+  "sapuxLayer": "CUSTOMER_BASE",
+  "keywords": [
+    "ui5",
+    "openui5",
+    "sapui5"
+  ],
+  "main": "webapp/index.html"
 }
