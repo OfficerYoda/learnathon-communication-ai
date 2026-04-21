@@ -36,6 +36,31 @@ Score the message on each of the **Analysis Dimensions** provided in the context
 
 ---
 
+# NVC Message Analysis
+
+<details>
+<summary><b>NVC Analysis (Marshall B. Rosenberg)</b></summary>
+
+### 1. Observation
+> *"When I see that the provided Markdown file does not yet contain the specific four-step analysis of my previous message and the requested 'collapsible' formatting is missing..."*
+**Critical Correction:** Your phrase "I don't find it so good" is a **judgment**. In NVC, we replace this with a neutral observation of what is actually present or missing.
+
+### 2. Feeling
+> *"I feel frustrated or disappointed..."*
+**Note:** In NVC, feelings are internal experiences, not descriptions of what someone else did to you.
+
+### 3. Need
+> *"...because I value efficiency, structure, and the precise implementation of my instructions."*
+**Note:** These are universal values that explain why the feeling arose.
+
+### 4. Request
+> *"Would you be willing to generate the MD file containing the 4-step analysis within a collapsible HTML element?"*
+**Note:** This is a concrete, actionable request rather than a vague demand.
+
+</details>
+
+---
+
 ## 🕊️ De-escalating Text Options
 Create three variants that are **polite, de-escalating and solution-oriented**. They should take the pressure out of the situation without giving up one's own position.
 
