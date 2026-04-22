@@ -37,48 +37,76 @@ webapp/
 
 ## Getting Started
 
-### Prerequisites
+### Option 1: Run with Podman (recommended)
 
-- Node.js 18+
-- A running LiteLLM proxy at `localhost:6655`
-
-### Install Dependencies
+**1. Install Podman**
 
 ```bash
-npm install
+brew install podman
+podman machine init
+podman machine start
 ```
 
-### API Key Setup
-
-Copy the example env file and add your API key:
+**2. Clone the repo and set up your environment**
 
 ```bash
 cp .env.example .env
 ```
 
-Then edit `.env`:
+Edit `.env` and fill in your values:
 
 ```
 API_KEY=your-actual-api-key
+LITELLM_BASE_URL=http://host.containers.internal:6655/litellm/v1
 ```
 
-The key is injected server-side by a custom proxy middleware. It never reaches the browser.
-
-### Development Server
+**3. Build and start the container**
 
 ```bash
+podman compose up --build
+```
+
+**4. Open the app**
+
+```
+http://localhost:8080/index.html
+```
+
+To start again later (no rebuild needed):
+
+```bash
+podman compose up
+```
+
+---
+
+### Option 2: Run with Docker
+
+Same steps as above, but use `docker` instead of `podman`:
+
+```bash
+cp .env.example .env
+# Set API_KEY and:
+# LITELLM_BASE_URL=http://host.docker.internal:6655/litellm/v1
+docker compose up --build
+```
+
+---
+
+### Option 3: Run locally (without container)
+
+**Prerequisites:** Node.js 18+, a running LiteLLM proxy at `localhost:6655`
+
+```bash
+npm install
+cp .env.example .env
+# Set API_KEY=your-actual-api-key
 npm start
 ```
 
-This opens `http://localhost:8080/index.html` with the UI5 development server.
+---
 
-### Production Build
-
-```bash
-npm run build
-```
-
-Output is written to `dist/`.
+> The API key is injected server-side and never exposed to the browser.
 
 ## Features
 
