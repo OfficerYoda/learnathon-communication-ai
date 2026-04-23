@@ -25,6 +25,12 @@
         <tnt:mainContents>
             <Page id="mainPage" showHeader="false" enableScrolling="false">
                 <content>
+                    <MessageStrip
+                        text="{i18n>bannerNoDataStored}"
+                        type="Information"
+                        showIcon="true"
+                        showCloseButton="true"
+                        class="sapUiTinyMarginBottom"/>
                     <layout:Splitter id="mainSplitter" height="100%">
                         <layout:contentAreas>
 
