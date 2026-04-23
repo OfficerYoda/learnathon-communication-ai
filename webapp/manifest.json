@@ -74,10 +74,8 @@
                 "type": "sap.ui.model.json.JSONModel",
                 "settings": {
                     "modes": [],
-                    "models": [],
-                    "modelsLoading": true,
                     "activeModeId": "",
-                    "selectedModel": "",
+                    "selectedModel": "anthropic--claude-sonnet-latest",
                     "relationship": "",
                     "situation": "",
                     "selectedTones": [],

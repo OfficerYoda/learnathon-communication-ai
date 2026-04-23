@@ -126,13 +126,6 @@
                                                 enabled="{config>/isEmailMode}"
                                                 class="sapUiTinyMarginBottom"/>
 
-                                            <Label text="{i18n>sidebarModelLabel}" labelFor="modelSelect"/>
-                                            <Select
-                                                id="modelSelect"
-                                                selectedKey="{config>/selectedModel}"
-                                                change="onModelChange"
-                                                width="100%">
-                                            </Select>
                                         </layout:VerticalLayout>
                                     </Panel>
 
@@ -157,12 +150,6 @@
                                             <Title text="{config>/activeMode/title}" level="H5"/>
                                         </contentLeft>
                                         <contentRight>
-                                            <Text
-                                                text="{
-                                                    path: 'config>/selectedModel',
-                                                    formatter: '.formatter.modelDisplayName'
-                                                }"
-                                                class="reflect-model-label"/>
                                             <Button
                                                 text="{i18n>headerClearChat}"
                                                 icon="sap-icon://decline"
@@ -191,10 +178,6 @@
                                             path: 'config>/activeMode/description',
                                             formatter: '.formatEmptyDesc'
                                         }" class="sapUiSmallMarginBottom"/>
-                                        <Text text="{
-                                            path: 'config>/selectedModel',
-                                            formatter: '.formatEmptyStateMeta'
-                                        }" class="reflect-meta-text"/>
                                     </VBox>
 
                                     <!-- Messages List -->

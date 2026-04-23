@@ -119,13 +119,6 @@
     font-style: italic;
 }
 
-.reflect-model-label {
-    font-size: 0.6875rem;
-    color: var(--sapContent_LabelColor, #556b82);
-    font-family: "72Mono", monospace;
-    margin-right: 0.5rem;
-}
-
 .reflect-meta-text {
     font-size: 0.75rem;
     color: var(--sapContent_LabelColor, #556b82);

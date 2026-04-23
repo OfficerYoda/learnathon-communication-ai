@@ -99,17 +99,6 @@ sap.ui.define([
         },
 
         /**
-         * Returns the display name from a model ID (last segment after /).
-         * @param {string} sModel - Full model ID string
-         * @returns {string}
-         */
-        modelDisplayName: function (sModel) {
-            if (!sModel) return "";
-            var aParts = sModel.split("/");
-            return aParts[aParts.length - 1] || sModel;
-        },
-
-        /**
          * Returns the role label text based on role string.
          * @param {string} sRole - "user" or "assistant"
          * @returns {string}

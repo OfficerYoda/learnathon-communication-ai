@@ -2,16 +2,15 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/json/JSONModel",
     "sap/ui/layout/SplitterLayoutData",
-    "sap/ui/core/Item",
     "com/reflect/app/model/api",
     "com/reflect/app/model/prompts",
     "com/reflect/app/model/formatter",
     "com/reflect/app/model/chartRenderer"
-], function (Controller, JSONModel, SplitterLayoutData, Item, Api, Prompts, formatter, chartRenderer) {
+], function (Controller, JSONModel, SplitterLayoutData, Api, Prompts, formatter, chartRenderer) {
     "use strict";
 
     var EMAIL_MODE_ID = "email-drafting";
-    var DEFAULT_MODEL = "anthropic--claude-4-sonnet";
+    var DEFAULT_MODEL = "anthropic--claude-sonnet-latest";
 
     // Maps dimension keys (used in MultiComboBox) to display labels (used in prompts/charts)
     var DIMENSION_LABELS = {
@@ -64,21 +63,9 @@ sap.ui.define([
                     oConfigModel.setProperty("/isEmailMode", aModes[0].id === EMAIL_MODE_ID);
                     that._selectModeInList(aModes[0].id);
                 }
-            });
 
-            // Load available models
-            Api.fetchModels().then(function (aModels) {
-                var oConfigModel = that.getView().getModel("config");
-                oConfigModel.setProperty("/models", aModels);
-                oConfigModel.setProperty("/modelsLoading", false);
-                that._bindModelSelect(aModels);
-
-                if (aModels.length > 0) {
-                    var sDefault = aModels.indexOf(DEFAULT_MODEL) !== -1 ? DEFAULT_MODEL : aModels[0];
-                    oConfigModel.setProperty("/selectedModel", sDefault);
-                } else {
-                    oConfigModel.setProperty("/selectedModel", DEFAULT_MODEL);
-                }
+                // Set the fixed model
+                oConfigModel.setProperty("/selectedModel", DEFAULT_MODEL);
             });
 
             // Handle Enter key in the chat input
@@ -158,19 +145,6 @@ sap.ui.define([
             });
         },
 
-        _bindModelSelect: function (aModels) {
-            var oSelect = this.byId("modelSelect");
-            if (!oSelect) return;
-
-            oSelect.destroyItems();
-            for (var i = 0; i < aModels.length; i++) {
-                oSelect.addItem(new Item({
-                    key: aModels[i],
-                    text: formatter.modelDisplayName(aModels[i])
-                }));
-            }
-        },
-
         _selectModeInList: function (sModeId) {
             var oList = this.byId("modesList");
             if (!oList) return;
@@ -238,11 +212,6 @@ sap.ui.define([
             this._clearChat();
         },
 
-        onModelChange: function (oEvent) {
-            var sKey = oEvent.getParameter("selectedItem").getKey();
-            this.getView().getModel("config").setProperty("/selectedModel", sKey);
-        },
-
         onToneSelectionChange: function (oEvent) {
             var oMultiCombo = oEvent.getSource();
             var aSelectedKeys = oMultiCombo.getSelectedKeys();
@@ -307,10 +276,9 @@ sap.ui.define([
             return sDesc || "Select a module from the sidebar to begin a structured self-reflection session.";
         },
 
-        formatEmptyStateMeta: function (sModel) {
-            var sDisplay = formatter.modelDisplayName(sModel);
+        formatEmptyStateMeta: function () {
             var sTime = formatter.formatTimestamp(new Date().toISOString());
-            return "Model: " + sDisplay + "  |  Session: " + sTime;
+            return "Session: " + sTime;
         },
 
         // ─── Core Chat Logic ──────────────────────────────────
