@@ -25,13 +25,14 @@
         <tnt:mainContents>
             <Page id="mainPage" showHeader="false" enableScrolling="false">
                 <content>
-                    <MessageStrip
-                        text="{i18n>bannerNoDataStored}"
-                        type="Information"
-                        showIcon="true"
-                        showCloseButton="true"
-                        class="sapUiTinyMarginBottom"/>
-                    <layout:Splitter id="mainSplitter" height="100%">
+                    <VBox height="100%" renderType="Bare" class="reflect-main-layout">
+                        <MessageStrip
+                            text="{i18n>bannerNoDataStored}"
+                            type="Information"
+                            showIcon="true"
+                            showCloseButton="true"
+                            class="sapUiTinyMarginBottom"/>
+                        <layout:Splitter id="mainSplitter" class="reflect-main-splitter">
                         <layout:contentAreas>
 
                             <!-- Left Panel: Configuration Sidebar -->
@@ -283,6 +284,7 @@
 
                         </layout:contentAreas>
                     </layout:Splitter>
+                    </VBox>
                 </content>
             </Page>
         </tnt:mainContents>
