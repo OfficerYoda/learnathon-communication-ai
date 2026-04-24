@@ -108,7 +108,12 @@
 
 .reflect-footer-toolbar.sapMTB {
     padding: 0.25rem 0.5rem;
-    height: auto;
+    height: auto !important;
+    overflow: visible;
+}
+
+.reflect-footer-toolbar .sapMTBContent {
+    overflow: visible;
 }
 
 .reflect-chat-input {
