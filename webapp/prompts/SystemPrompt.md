@@ -1,5 +1,5 @@
 ---
-title: Communication Analyzer Compact
+title: Communication Analyzer
 description: AI-Powered NVC-Reflector. Instant release recommendation, scoring and 3 de-escalating text alternatives.
 icon: 🕊️
 ---
